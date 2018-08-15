@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "8912a8f7-5fd6-4462-aed6-c847b077cdc9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "mainmenu_img_rubybg": {
+      "ver": "1.0.3",
+      "uuid": "9003d487-8872-4f76-a715-ca46fbb5d515",
+      "rawTextureUuid": "8912a8f7-5fd6-4462-aed6-c847b077cdc9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -2,
+      "trimX": 0,
+      "trimY": 5,
+      "width": 167,
+      "height": 49,
+      "rawWidth": 167,
+      "rawHeight": 55,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
