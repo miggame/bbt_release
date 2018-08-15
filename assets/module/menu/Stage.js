@@ -1,41 +1,55 @@
-// Learn cc.Class:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-
+let GameCfg = require('GameCfg');
+let UIMgr = require('UIMgr');
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        spStage: { //预制挂载节点
+            displayName: 'spStage',
+            default: null,
+            type: cc.Sprite
+        },
+        lblStage: { //预制挂载节点
+            displayName: 'lblStage',
+            default: null,
+            type: cc.Label
+        },
+        _index: null,
+        _canChoose: false,
+        starArr: [cc.Sprite]
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad() {
+        this._canChoose = false;
+        this.lblStage.node.active = false;
+        this.starArr.forEach(spStar => {
+            spStar.node.active = false;
+        });
+    },
 
-    start () {
+    start() {
 
     },
 
     // update (dt) {},
+    initView(index) {
+        this._index = index;
+        if (GameCfg.getCurStage() >= index) {
+            this._canChoose = true;
+            this.lblStage.node.active = true;
+            this.lblStage.string = index;
+            let path = 'menu/mainmenu_img_stageunlockbg';
+            UIMgr.changeSpImg(path, this.spStage);
+            let starNum = GameCfg.getStageCfgOfStar(index);
+            this._showStageStar(starNum);
+        }
+    },
+
+    _showStageStar(starNum) {
+        for (let i = 0; i < starNum; ++i) {
+            this.starArr[i].node.active = false;
+        }
+    }
 });

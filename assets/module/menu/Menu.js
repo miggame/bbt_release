@@ -43,6 +43,7 @@ cc.Class({
                 _stageNode = cc.instantiate(this.stagePre);
             }
             this.scrollView.content.addChild(_stageNode);
+            _stageNode.getComponent('Stage').initView(i + 1);
         }
     }
 });

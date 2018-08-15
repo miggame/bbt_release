@@ -1,7 +1,7 @@
 let Observer = require('Observer');
 let UIMgr = require('UIMgr');
 let GameData = require('GameData');
-
+let GameCfg = require('GameCfg');
 cc.Class({
     extends: Observer,
 
@@ -37,6 +37,7 @@ cc.Class({
     onLoad() {
         this._initMsg();
         GameData.init(); //初始化游戏数据
+        GameCfg.init(); //初始化游戏配置数据
     },
 
     start() {
