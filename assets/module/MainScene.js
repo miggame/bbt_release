@@ -1,41 +1,59 @@
-// Learn cc.Class:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
+let Observer = require('Observer');
+let UIMgr = require('UIMgr');
+let GameData = require('GameData');
 
 cc.Class({
-    extends: cc.Component,
+    extends: Observer,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        addNode: { //预制挂载节点
+            displayName: 'addNode',
+            default: null,
+            type: cc.Node
+        },
+        loadingPre: { //loading界面
+            displayName: 'loadingPre',
+            default: null,
+            type: cc.Prefab
+        },
+        menuPre: { //menu界面
+            displayName: 'menuPre',
+            default: null,
+            type: cc.Prefab
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
+    _getMsgList() {
+        return [
+            GameLocalMsg.Msg.CloseLoading
+        ];
+    },
+    _onMsg(msg, data) {
+        if (msg === GameLocalMsg.Msg.CloseLoading) {
+            this._initMenu();
+        }
+    },
+    onLoad() {
+        this._initMsg();
+        GameData.init(); //初始化游戏数据
+    },
 
-    // onLoad () {},
-
-    start () {
-
+    start() {
+        this._initLoading();
     },
 
     // update (dt) {},
+    _initLoading() { //展示loading界面
+        UIMgr.createPrefab(this.loadingPre, function (root, ui) {
+            this.addNode.addChild(root);
+        }.bind(this));
+    },
+
+    _initMenu() {
+        UIMgr.createPrefab(this.menuPre, function (root, ui) {
+            this.addNode.addChild(root);
+            ui.getComponent('Menu').initView();
+        }.bind(this));
+    }
 });

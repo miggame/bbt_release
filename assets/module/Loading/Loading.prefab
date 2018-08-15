@@ -282,30 +282,13 @@
     "sync": false
   },
   {
-    "__type__": "cc.Widget",
+    "__type__": "5b661+0QiNJiLiiU4qcPA1f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
-    "alignMode": 1,
-    "_target": null,
-    "_alignFlags": 45,
-    "_left": -540,
-    "_right": 540,
-    "_top": 960,
-    "_bottom": -960,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 0,
-    "_originalHeight": 0
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

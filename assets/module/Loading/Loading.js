@@ -1,15 +1,10 @@
-// Learn cc.Class:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
+let GameData = require('GameData');
+let Observer = require('Observer');
+let ObserverMgr = require('ObserverMgr');
+let UIMgr = require('UIMgr');
 
 cc.Class({
-    extends: cc.Component,
+    extends: Observer,
 
     properties: {
         // foo: {
@@ -30,11 +25,27 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
+    _getMsgList() {
+        return [];
+    },
+    _onMsg(msg, data) {
 
-    // onLoad () {},
+    },
+    // onLoad() {
 
-    start () {
+    // },
 
+    start() {
+        cc.loader.loadResDir('map', cc.JsonAsset, function (err, asset) {
+            if (err) {
+                console.log('加载地图json出错: ', err);
+                return;
+            }
+            GameData.gamedata_savelv = asset.shift().json;
+            GameData.mapdata = asset;
+            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.CloseLoading, null);
+            UIMgr.destroyUI(this);
+        }.bind(this));
     },
 
     // update (dt) {},

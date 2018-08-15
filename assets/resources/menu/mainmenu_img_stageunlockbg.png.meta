@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "f4a7b076-d689-453c-9c57-c39c19348bc3",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "mainmenu_img_stageunlockbg": {
+      "ver": "1.0.3",
+      "uuid": "a8257945-2caf-49d5-a638-f5187d237a84",
+      "rawTextureUuid": "f4a7b076-d689-453c-9c57-c39c19348bc3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": -7.5,
+      "trimX": 4,
+      "trimY": 23,
+      "width": 108,
+      "height": 114,
+      "rawWidth": 117,
+      "rawHeight": 145,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
