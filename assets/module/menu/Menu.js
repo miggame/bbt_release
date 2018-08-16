@@ -1,7 +1,9 @@
 let GameData = require('GameData');
+let Observer = require('Observer');
+let UIMgr = require('UIMgr');
 
 cc.Class({
-    extends: cc.Component,
+    extends: Observer,
 
     properties: {
         _stageNodePool: null,
@@ -18,8 +20,18 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
-
+    _getMsgList() {
+        return [
+            GameLocalMsg.Msg.GoGame
+        ];
+    },
+    _onMsg(msg, data) {
+        if (msg === GameLocalMsg.Msg.GoGame) {
+            UIMgr.destroyUI(this);
+        }
+    },
     onLoad() {
+        this._initMsg();
         //创建节点池
         let len = 30
         this._stageNodePool = new cc.NodePool('Stage');

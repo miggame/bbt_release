@@ -1,6 +1,7 @@
 module.exports = {
     curStage: 1, //当前关卡
-    stageCfg: null, //所有关卡配置
+    stageCfg: null, //所有关卡配置,
+    defaultCol: 11, //关卡列数
     init() {
         this.curStage = cc.sys.localStorage.getItem('CurStage');
         if (this.curStagestage === undefined || this.curStage === null) {

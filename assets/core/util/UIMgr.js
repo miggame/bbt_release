@@ -44,7 +44,6 @@ module.exports = {
                 let uuid = script.node.uuid.toString();
 
                 let rootNode = this._uiMap[uuid];
-
                 if (rootNode) {
                     rootNode.destroy();
 

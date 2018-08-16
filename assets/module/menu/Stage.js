@@ -1,5 +1,8 @@
 let GameCfg = require('GameCfg');
 let UIMgr = require('UIMgr');
+let ObserverMgr = require('ObserverMgr');
+let GameData = require('GameData');
+
 cc.Class({
     extends: cc.Component,
 
@@ -51,5 +54,13 @@ cc.Class({
         for (let i = 0; i < starNum; ++i) {
             this.starArr[i].node.active = false;
         }
+    },
+
+    onBtnClickToStage() {
+        if (!this._canChoose) {
+            return;
+        }
+        GameData.initStageData(this._index);
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
     }
 });

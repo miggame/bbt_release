@@ -1874,7 +1874,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 972,
-      "height": 1249.92
+      "height": 324
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2815,7 +2815,7 @@
     "_alignFlags": 45,
     "_left": 0.05,
     "_right": 0.05,
-    "_top": 0,
+    "_top": 925.9200000000001,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -2839,9 +2839,9 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 972,
-      "height": 1249.92
+      "height": 324
     },
-    "_resize": 0,
+    "_resize": 1,
     "_N$layoutType": 3,
     "_N$padding": 0,
     "_N$cellSize": {
@@ -2960,7 +2960,7 @@
     "vertical": true,
     "inertia": true,
     "brake": 0.75,
-    "elastic": true,
+    "elastic": false,
     "bounceDuration": 0.23,
     "scrollEvents": [],
     "cancelInnerEvents": true,
