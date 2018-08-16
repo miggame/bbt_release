@@ -27,7 +27,7 @@ cc.Class({
     },
     _onMsg(msg, data) {
         if (msg === GameLocalMsg.Msg.GoGame) {
-            UIMgr.destroyUI(this);
+            this._close();
         }
     },
     onLoad() {
@@ -57,5 +57,8 @@ cc.Class({
             this.scrollView.content.addChild(_stageNode);
             _stageNode.getComponent('Stage').initView(i + 1);
         }
+    },
+    _close() {
+        UIMgr.destroyUI(this);
     }
 });

@@ -1,41 +1,51 @@
-// Learn cc.Class:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
+let UIMgr = require('UIMgr');
+let GameData = require('GameData');
+let GameCfg = require('GameCfg');
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        spBlock: {
+            displayName: 'spBlock',
+            default: null,
+            type: cc.Sprite
+        },
+        lblScore: {
+            displayName: 'lblScore',
+            default: null,
+            type: cc.Label
+        },
+        _type: null,
+        _index: null,
+        _data1: null,
+        _data2: null
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad() {
+        let stageData = GameData.stageData;
+        this._data1 = stageData.type.layer1.data;
+        this._data2 = stageData.type.layer2.data;
+    },
 
-    start () {
+    start() {
 
     },
 
     // update (dt) {},
+    initView(type, index, parentNode) {
+
+        this._type = type;
+        this._index = index;
+        let path = 'game/game_img_block' + type + '_1';
+        UIMgr.changeSpImg(path, this.spBlock);
+        let x = index.x;
+        let y = index.y;
+        let vWidth = parentNode.width;
+        this.node.height = this.node.width = vWidth / GameCfg.defaultCol;
+        this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x); //锚点（0.5， 1）
+        this.node.x = (y - Math.floor(GameCfg.defaultCol * 0.5)) * this.node.width;
+    }
 });

@@ -44,9 +44,14 @@ cc.Class({
             GameData.gamedata_savelv = asset.shift().json;
             GameData.mapdata = asset;
             ObserverMgr.dispatchMsg(GameLocalMsg.Msg.CloseLoading, null);
-            UIMgr.destroyUI(this);
+            this.scheduleOnce(this._close, 1);
+
         }.bind(this));
     },
+
+    _close() {
+        UIMgr.destroyUI(this);
+    }
 
     // update (dt) {},
 });

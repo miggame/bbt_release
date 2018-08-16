@@ -1,3 +1,4 @@
+let GameCfg = require('GameCfg');
 let GameData = require('GameData');
 
 cc.Class({
@@ -41,16 +42,16 @@ cc.Class({
         this._data1 = stageData.type.layer1.data;
         this._data2 = stageData.type.layer2.data;
         let len = this._data1.length;
-        for (let i = len - GameData.defaultCol; i < len; ++i) {
-            for (let j = 0; j < GameData.defaultCol; ++j) {
+        for (let i = len - parseInt(GameCfg.defaultCol); i < len; ++i) {
+            for (let j = 0; j < GameCfg.defaultCol; ++j) {
                 let _type = this._data1[i][j];
                 let _index = cc.v2(i, j);
-                this._showBlock(_type, _index);
+                this._showBlock(_type, _index, this.blockLayer);
             }
         }
     },
 
-    _showBlock(type, index) { //展示block
+    _showBlock(type, index, parentNode) { //展示block
         if (type === 0) {
             return;
         }
@@ -58,7 +59,7 @@ cc.Class({
         if (!_blockNode) {
             _blockNode = cc.instantiate(this.blockPre);
         }
-        this.blockLayer.addChild(_blockNode);
-        _blockNode.getComponent('Block').initView(type, index);
+        parentNode.addChild(_blockNode);
+        _blockNode.getComponent('Block').initView(type, index, parentNode);
     }
 });
