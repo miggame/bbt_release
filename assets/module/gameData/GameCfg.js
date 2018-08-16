@@ -33,8 +33,9 @@ module.exports = {
     getStageCfgOfStar(index) {
         if (this.stageCfg['stage' + index] === undefined) {
             this.stageCfg['stage' + index] = new Object();
-            cc.log(this.stageCfg['stage' + index]);
-            cc.log(this.stageCfg['stage' + index].star);
+            if (this.stageCfg['stage' + index].star === undefined) {
+                this.stageCfg['stage' + index].star = new Object();
+            }
             this.stageCfg['stage' + index].star = 0;
             this.saveStageCfg();
             return this.stageCfg['stage' + index].star;
