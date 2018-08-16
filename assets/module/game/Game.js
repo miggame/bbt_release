@@ -108,6 +108,7 @@ cc.Class({
             }
         }
         this._showPreview(this._data1);
+        this._initTouch();
     },
 
     _showBlock(type, index, parentNode) { //展示block
@@ -156,6 +157,22 @@ cc.Class({
     },
     _hideBallCount1() {
         this.lblBallCount1.node.active = false;
+    },
+
+    //初始化点击监听
+    _initTouch() {
+        this.ballLayer.on('touchstart', function (event) {
+            console.log('event.getLocation(): ', event.getLocation());
+        });
+        this.ballLayer.on('touchmove', function (event) {
+
+        });
+        this.ballLayer.on('touchend', function (event) {
+
+        });
+        this.ballLayer.on('touchcancel', function (event) {
+
+        });
     }
 
 });

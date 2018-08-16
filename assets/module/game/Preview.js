@@ -49,6 +49,7 @@ cc.Class({
     },
 
     _close() {
+
         UIMgr.destroyUI(this);
     },
 
