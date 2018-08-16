@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ComUIBg",
+    "_name": "Ball",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -24,11 +24,17 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 5
+      },
+      {
         "__id__": 6
+      },
+      {
+        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 8
     },
     "_id": "",
     "_opacity": 255,
@@ -47,8 +53,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
-      "height": 1920
+      "width": 26,
+      "height": 26
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -68,7 +74,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "bgNode",
+    "_name": "spBall",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -79,21 +85,18 @@
     "_components": [
       {
         "__id__": 3
-      },
-      {
-        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 5
+      "__id__": 4
     },
     "_id": "",
-    "_opacity": 120,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -104,8 +107,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
-      "height": 1920
+      "width": 26,
+      "height": 26
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -132,10 +135,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
+      "__uuid__": "0a222454-728a-4359-a61c-0b95d16a4861"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -150,53 +153,71 @@
     "_atlas": null
   },
   {
-    "__type__": "cc.Widget",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "alignMode": 1,
-    "_target": null,
-    "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 100,
-    "_originalHeight": 100
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "023f56be-63c3-4a76-b3bc-409dfbfc8301"
+      "__uuid__": "5bac12b1-04a4-4dc5-9a8e-d2b147964892"
     },
-    "fileId": "d0sn2YZYpC6blmHvf3RNTI",
+    "fileId": "12it/78zRImovGVtxKmiHz",
     "sync": false
   },
   {
-    "__type__": "e80c9ywMZNMy5gb24TRN/f6",
+    "__type__": "90bf7tRwAFHb5QH50wXpR5/",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "bgNode": {
-      "__id__": 2
+    "spBall": {
+      "__id__": 3
     }
+  },
+  {
+    "__type__": "cc.RigidBody",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_type": 2,
+    "_allowSleep": true,
+    "_gravityScale": 0,
+    "_linearDamping": 0,
+    "_angularDamping": 0,
+    "_linearVelocity": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_angularVelocity": 0,
+    "_fixedRotation": false,
+    "enabledContactListener": true,
+    "bullet": false
+  },
+  {
+    "__type__": "cc.PhysicsCircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_density": 1,
+    "_sensor": false,
+    "_friction": 0,
+    "_restitution": 1,
+    "body": null,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_radius": 13
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -204,9 +225,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "023f56be-63c3-4a76-b3bc-409dfbfc8301"
+      "__uuid__": "5bac12b1-04a4-4dc5-9a8e-d2b147964892"
     },
-    "fileId": "deqoJ31DhN/IQiTcygl7Cy",
+    "fileId": "b7BVFsziVNQ7LCx4kG/Rxr",
     "sync": false
   }
 ]

@@ -35,7 +35,7 @@ cc.Class({
     start() {},
 
     // update (dt) {},
-    initView(type, index, parentNode) {
+    initView(type, index, parentNode, isPreview = false) {
         this._type = type;
         this._index = index;
         let path = 'game/game_img_block' + type + '_1';
@@ -46,6 +46,10 @@ cc.Class({
         this.node.height = this.node.width = vWidth / GameCfg.defaultCol;
         this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x); //锚点（0.5， 1）
         this.node.x = (y - Math.floor(GameCfg.defaultCol * 0.5)) * this.node.width;
+        if (isPreview !== false) {
+            this.lblScore.node.active = false;
+            return;
+        }
         this._initHp(type, index);
         this._initPhysics(type, index);
     },
@@ -65,7 +69,6 @@ cc.Class({
         this._refreshHp();
     },
     _refreshHp() {
-        cc.log('2');
         if (this._hp === 0) {
             this.lblScore.node.active = false;
             return;
@@ -76,7 +79,26 @@ cc.Class({
             return;
         }
     },
-    _initPhysics() {
-
+    _initPhysics(type) {
+        let _points = [];
+        let _p0 = cc.v2(-w, -w);
+        let _p1 = cc.v2(w, -w);
+        let _p2 = cc.v2(w, w);
+        let _p3 = cc.v2(-w, w);
+        let w = this.node.width * 0.5;
+        if (type === 1 || type === 2) {
+            _points = [_p0, _p1, _p2, _p3];
+        } else if (type === 3) {
+            _points = [p0, p1, p3];
+        } else if (type === 4) {
+            _points = [p0, p1, p2];
+        } else if (type === 5) {
+            _points = [p1, p2, p3];
+        } else if (type === 6) {
+            _points = [p0, p2, p3];
+        }
+        let _phyCollider = this.node.addComponent(cc.PhysicsBoxCollider);
+        _phyCollider.points = _points;
+        _phyCollider.apply();
     }
 });
