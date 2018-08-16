@@ -41,25 +41,15 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        //uiLayer,包含小球的数量显示label
-        uiLayer: {
-            displayName: 'uiLayer',
+        spBall: {
+            displayName: 'spBall',
             default: null,
-            type: cc.Node
-        },
-        lblBallCount0: {
-            displayName: 'lblBallCount0',
-            default: null,
-            type: cc.Label
-        },
-        lblBallCount1: {
-            displayName: 'lblBallCount1',
-            default: null,
-            type: cc.Label
+            type: cc.Sprite
         },
         //点击监听
         _ballPos: null,
-        _touchP: null
+        _touchP: null,
+        _shootBallCount: null,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -97,7 +87,7 @@ cc.Class({
     initView() {
         //展示ball
         this._ballCount = GameData.ballCount;
-        this._showBall(this._ballCount);
+        this._showBall();
         //展示block
         let stageData = GameData.stageData;
         this._data1 = stageData.type.layer1.data;
@@ -134,53 +124,41 @@ cc.Class({
     },
 
     //展示ball
-    _showBall(len) {
-        this.ballLayer.destroyAllChildren();
-        for (let i = 0; i < len; ++i) {
-            let _ballNode = this._ballPool.get();
-            if (!_ballNode) {
-                _ballNode = cc.instantiate(this.ballPre);
-            }
-            this.ballLayer.addChild(_ballNode);
-            if (this._ballPos === null || this._ballPos === undefined) {
-                let y = -this.ballLayer.height + _ballNode.height * 0.5;
-                this._ballPos = cc.v2(0, y);
-            }
-            _ballNode.getComponent('Ball').initView(this.ballLayer);
-        }
-        this._refreshBallCount0(len);
-        this._hideBallCount1();
-    },
-    _refreshBallCount0(num) {
-        this.lblBallCount0.node.active = true;
-        this.lblBallCount0.string = 'x' + num;
-    },
-    _hideBallCount0() {
-        this.lblBallCount0.node.active = false;
-    },
-    _refreshBallCount1(num) {
-        this.lblBallCount1.node.active = true;
-        this.lblBallCount1.string = 'x' + num;
-    },
-    _hideBallCount1() {
-        this.lblBallCount1.node.active = false;
+    _showBall() {
+        this._shootBallCount = 0; //发射出来人小球数
+        this.spBall.node.x = 0;
+        this.spBall.node.y = -this.ballLayer.height + this.spBall.node.height * 0.5;
+        this._ballPos = this.spBall.node.position;
     },
 
     //初始化点击监听
     _initTouch() {
         this.ballLayer.on('touchstart', function (event) {
-            console.log('event.getLocation(): ', event.getLocation());
             this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
         }.bind(this));
         this.ballLayer.on('touchmove', function (event) {
+            this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
+            let _touchV = this._touchP.sub(this._ballPos).normalizeSelf();
 
-        });
+            cc.log(_touchV);
+        }.bind(this));
         this.ballLayer.on('touchend', function (event) {
-
-        });
+            this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
+            this.schedule(this._shootBall, 0.2, this._ballCount - 1, 0);
+        }.bind(this));
         this.ballLayer.on('touchcancel', function (event) {
 
-        });
+        }.bind(this));
+    },
+    _shootBall() {
+        let _touchV = this._touchP.sub(this._ballPos).normalizeSelf().mul(GameCfg.ballSpeed);
+        this._shootBallCount++;
+        let _ballNode = this._ballPool.get();
+        if (!_ballNode) {
+            _ballNode = cc.instantiate(this.ballPre);
+        }
+        this.ballLayer.addChild(_ballNode);
+        _ballNode.position = this.spBall.node.position;
+        _ballNode.getComponent('Ball').initView(_touchV);
     }
-
 });

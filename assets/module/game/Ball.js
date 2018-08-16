@@ -28,9 +28,10 @@ cc.Class({
     },
 
     // update (dt) {},
-    initView(parentNode) {
-        let h = parentNode.height;
-        this.node.x = 0;
-        this.node.y = -h + this.node.height * 0.5;
+    initView(V) { //v代表速度向量
+        let _phyBody = this.node.getComponent(cc.RigidBody);
+        let vel = _phyBody.linearVelocity;
+        vel = V;
+        _phyBody.linearVelocity = vel;
     }
 });
