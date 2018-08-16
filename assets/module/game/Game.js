@@ -41,6 +41,22 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        //uiLayer,包含小球的数量显示label
+        uiLayer: {
+            displayName: 'uiLayer',
+            default: null,
+            type: cc.Node
+        },
+        lblBallCount0: {
+            displayName: 'lblBallCount0',
+            default: null,
+            type: cc.Label
+        },
+        lblBallCount1: {
+            displayName: 'lblBallCount1',
+            default: null,
+            type: cc.Label
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -124,5 +140,22 @@ cc.Class({
             this.ballLayer.addChild(_ballNode);
             _ballNode.getComponent('Ball').initView(this.ballLayer);
         }
+        this._refreshBallCount0(len);
+        this._hideBallCount1();
+    },
+    _refreshBallCount0(num) {
+        this.lblBallCount0.node.active = true;
+        this.lblBallCount0.string = 'x' + num;
+    },
+    _hideBallCount0() {
+        this.lblBallCount0.node.active = false;
+    },
+    _refreshBallCount1(num) {
+        this.lblBallCount1.node.active = true;
+        this.lblBallCount1.string = 'x' + num;
+    },
+    _hideBallCount1() {
+        this.lblBallCount1.node.active = false;
     }
+
 });
