@@ -57,6 +57,9 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        //点击监听
+        _ballPos: null,
+        _touchP: null
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -139,6 +142,10 @@ cc.Class({
                 _ballNode = cc.instantiate(this.ballPre);
             }
             this.ballLayer.addChild(_ballNode);
+            if (this._ballPos === null || this._ballPos === undefined) {
+                let y = -this.ballLayer.height + _ballNode.height * 0.5;
+                this._ballPos = cc.v2(0, y);
+            }
             _ballNode.getComponent('Ball').initView(this.ballLayer);
         }
         this._refreshBallCount0(len);
@@ -163,7 +170,8 @@ cc.Class({
     _initTouch() {
         this.ballLayer.on('touchstart', function (event) {
             console.log('event.getLocation(): ', event.getLocation());
-        });
+            this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
+        }.bind(this));
         this.ballLayer.on('touchmove', function (event) {
 
         });
