@@ -1,6 +1,6 @@
 let UIMgr = require('UIMgr');
 let GameCfg = require('GameCfg');
-
+let ObserverMgr = require('ObserverMgr');
 cc.Class({
     extends: cc.Component,
 
@@ -42,18 +42,18 @@ cc.Class({
             for (let j = 0; j < col; ++j) {
                 let _type = data[i][j];
                 let _index = cc.v2(i, j);
-                this._showBlock(_type, _index, this.blockLayer);
+                this._showBlock(_type, _index, this.blockLayer, this._blockPool);
             }
         }
         this.scheduleOnce(this._close, 3);
     },
 
     _close() {
-
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.CanTouch, null);
         UIMgr.destroyUI(this);
     },
 
-    _showBlock(type, index, parentNode) { //展示block
+    _showBlock(type, index, parentNode, pool) { //展示block
         if (type === 0) {
             return;
         }
@@ -62,6 +62,6 @@ cc.Class({
             _blockNode = cc.instantiate(this.blockPre);
         }
         parentNode.addChild(_blockNode);
-        _blockNode.getComponent('Block').initView(type, index, parentNode, true);
+        _blockNode.getComponent('Block').initView(type, index, parentNode, pool, true);
     },
 });

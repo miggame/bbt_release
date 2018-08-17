@@ -21,6 +21,7 @@ cc.Class({
         _data1: null,
         _data2: null,
         _hp: null,
+        _pool: null //节点池
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -35,7 +36,8 @@ cc.Class({
     start() {},
 
     // update (dt) {},
-    initView(type, index, parentNode, isPreview = false) {
+    initView(type, index, parentNode, pool, isPreview = false) {
+        this._pool = pool;
         this._type = type;
         this._index = index;
         let path = 'game/game_img_block' + type + '_1';
@@ -100,5 +102,20 @@ cc.Class({
         let _phyCollider = this.node.addComponent(cc.PhysicsBoxCollider);
         _phyCollider.points = _points;
         _phyCollider.apply();
+    },
+
+    hit() {
+        let _tempArr = [1, 2, 3, 4, 5, 6, 9]; //有数值砖块类型
+        if (_tempArr.indexOf(this._type) !== -1) {
+            this._hp--;
+            this._refreshHp();
+        }
+    },
+    _refreshHp() {
+        if (this._hp <= 0) {
+            this._pool.put(this.node);
+            return;
+        }
+        this.lblScore.string = this._hp;
     }
 });
