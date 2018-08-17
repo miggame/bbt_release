@@ -36,7 +36,7 @@ cc.Class({
     start() {},
 
     // update (dt) {},
-    initView(type, index, parentNode, pool, isPreview = false) {
+    initView(type, index, parentNode, pool, leftRow, isPreview = false) {
         this._pool = pool;
         this._type = type;
         this._index = index;
@@ -46,7 +46,7 @@ cc.Class({
         let y = index.y;
         let vWidth = parentNode.width;
         this.node.height = this.node.width = vWidth / GameCfg.defaultCol;
-        this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x); //锚点（0.5， 1）
+        this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x) + leftRow * this.node.height; //锚点（0.5， 1）
         this.node.x = (y - Math.floor(GameCfg.defaultCol * 0.5)) * this.node.width;
         if (isPreview !== false) {
             this.lblScore.node.active = false;

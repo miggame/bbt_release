@@ -29,6 +29,7 @@ cc.Class({
         let vel = _phyBody.linearVelocity;
         vel = V;
         _phyBody.linearVelocity = vel;
+        // this.node.getComponent(cc.RigidBody).enabledContactListener = true;
     },
 
     onBeginContact(contact, self, other) { //tag:block-1, ground-2,wall-3

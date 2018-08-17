@@ -62,6 +62,6 @@ cc.Class({
             _blockNode = cc.instantiate(this.blockPre);
         }
         parentNode.addChild(_blockNode);
-        _blockNode.getComponent('Block').initView(type, index, parentNode, pool, true);
+        _blockNode.getComponent('Block').initView(type, index, parentNode, pool, 0, true); //0表示leftrow不存在
     },
 });

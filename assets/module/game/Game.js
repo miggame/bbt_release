@@ -24,6 +24,7 @@ cc.Class({
         },
         _data1: null, //类型数据
         _data2: null, //基础分数数据
+        _leftRow: null, //未展示行数
         previewPre: { //预览界面
             displayName: 'previewPre',
             default: null,
@@ -61,6 +62,11 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        ballUILayer: {
+            displayName: 'ballUILayer',
+            default: null,
+            type: cc.Node
+        },
         //点击监听
         _canTouch: false,
         _ballPos: null,
@@ -73,7 +79,19 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        _backBallCount: null
+        _backBallCount: null,
+
+        //底部相关按钮
+        bottomLayout: {
+            displayName: 'bottomLayout',
+            default: null,
+            type: cc.Node
+        },
+        btnBack: {
+            displayName: 'btnBack',
+            default: null,
+            type: cc.Button
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -136,11 +154,12 @@ cc.Class({
         this._data1 = stageData.type.layer1.data;
         this._data2 = stageData.type.layer2.data;
         let len = this._data1.length;
+        this._leftRow = len - parseInt(GameCfg.defaultCol);
         for (let i = len - parseInt(GameCfg.defaultCol); i < len; ++i) {
             for (let j = 0; j < GameCfg.defaultCol; ++j) {
                 let _type = this._data1[i][j];
                 let _index = cc.v2(i, j);
-                this._showBlock(_type, _index, this.blockLayer);
+                this._showBlock(_type, _index, this.blockLayer, this._leftRow);
             }
         }
         this._showPreview(this._data1);
@@ -153,7 +172,7 @@ cc.Class({
         this._ballPos = this.spBall.node.position;
     },
 
-    _showBlock(type, index, parentNode) { //展示block
+    _showBlock(type, index, parentNode, leftRow) { //展示block
         if (type === 0) {
             return;
         }
@@ -162,7 +181,7 @@ cc.Class({
             _blockNode = cc.instantiate(this.blockPre);
         }
         parentNode.addChild(_blockNode);
-        _blockNode.getComponent('Block').initView(type, index, parentNode, this._blockPool);
+        _blockNode.getComponent('Block').initView(type, index, parentNode, this._blockPool, leftRow);
     },
 
     _showPreview(data) {
@@ -205,6 +224,7 @@ cc.Class({
                 this._canTouch = false;
                 this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
                 this.schedule(this._shootBall, 0.2, this._ballCount - 1, 0);
+                this._showBtnBack();
             }
         }.bind(this));
         this.ballLayer.on('touchcancel', function (event) {
@@ -247,18 +267,85 @@ cc.Class({
         this.lblBallCountTemp.string = 'x' + this._backBallCount;
         if (this._backBallCount === this._ballCount) {
             this._reset();
+            this._moveBlocks();
         }
     },
     _reset() {
         this._synBallCount();
         this._synSpBallPos();
-        this.spBallTemp.node.active = false;
+        // this.spBallTemp.node.active = false;
         this._canTouch = true;
+        this._showUIBall();
+        this._showBtnBack();
         this._ballEndPos = null;
         this._shootBallCount = 0; //发射出来人小球数
         this._backBallCount = 0; //返回小球数
+
+    },
+    _showUIBall() {
+        this.spBall.node.active = this._canTouch ? true : false;
+        this.spBallTemp.node.active = !this.spBall.node.active;
+        console.log('this.spBall.node.active: ', this.spBall.node.active);
+        console.log('this.spBallTemp.node.active: ', this.spBallTemp.node.active);
         this._refreshBallCount();
     },
-
+    _moveBlocks() { //type:11,12,13,20的block不移动
+        let _h = this.blockLayer.width / GameCfg.defaultCol;
+        let _moveAct = cc.moveBy(1, cc.p(0, -_h));
+        let _blockArr = this.blockLayer.children;
+        let _len = this.blockLayer.childrenCount;
+        let _indexMap = [];
+        _blockArr.forEach(_elem => {
+            let _tempIndex = _elem.getComponent('Block')._index;
+            _indexMap.push(_tempIndex);
+        });
+        for (let i = _len - 1; i >= 0; --i) {
+            let _lastBlock = _blockArr[i];
+            let _script = _lastBlock.getComponent('Block');
+            let _type = _script._type;
+            let _index = _script._index;
+            let _newIndex = _index.add(cc.v2(1, 0));
+            if ([11, 12, 13, 20].indexOf(_type) === -1) {
+                if (!this._canInclude(_newIndex, _indexMap)) {
+                    _script._index.x++; //TODO ???
+                    _lastBlock.runAction(_moveAct.clone());
+                }
+            }
+        }
+        //显示一行剩余的blocks
+        if (this._leftRow > 0) {
+            this._leftRow--;
+            let _data1 = this._data1[this._leftRow];
+            // let _data2 = this._data2[this._leftRow];
+            for (let j = 0; j < GameCfg.defaultCol; ++j) {
+                let _type = _data1[j];
+                let _index = cc.v2(this._leftRow, j);
+                this._showBlock(_type, _index, this.blockLayer, this._leftRow);
+            }
+        }
+    },
+    _canInclude(item, arr) {
+        return arr.some((value) => {
+            return value.x === item.x && value.y === item.y;
+        });
+    },
+    _showBtnBack() { //刷新小球快速返回按钮
+        this.bottomLayout.active = this._canTouch ? true : false;
+        this.btnBack.node.active = !this.bottomLayout.active;
+    },
+    onBtnClickToBallBack() {
+        this._canTouch = true;
+        this._showBtnBack();
+        this.unschedule(this._shootBall, this);
+        this.ballLayer.children.forEach(_elem => {
+            console.log('_elem: ', _elem);
+            _elem.removeComponent(cc.PhysicsCircleCollider);
+            _elem.removeComponent(cc.RigidBody);
+            _elem.runAction(cc.moveTo(5, this._ballEndPos));
+        })
+        // while (this.ballLayer.childrenCount > 0) {
+        //     this._ballPool.put(this.ballLayer.children[0]);
+        // }
+    }
 
 });
