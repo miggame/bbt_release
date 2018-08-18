@@ -439,8 +439,9 @@ cc.Class({
     _showEnd(flag) { //flag:true胜利，false失败
         let _data = {
             status: flag,
-            stage: GameCfg.curStage
-        }
+            stage: GameCfg.curStage,
+            starNum: this._starNum
+        };
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.End, _data);
     },
     _close() {
@@ -467,13 +468,17 @@ cc.Class({
     //刷新得分
     _refreshScore() {
         this._sumScore += this._killCount * GameCfg.baseScore;
-        console.log('this._killCount: ', this._killCount);
-        console.log('this._sumScore: ', this._sumScore);
         this.lblTotalScore.string = this._sumScore;
         this._updateProgressBar();
     },
     _updateProgressBar() {
         this.progressBar.progress = parseFloat(this._sumScore / this._maxScore).toFixed(1);
+        if (this.progressBar.progress >= 0.7 && this.progressBar.progress < 1.0) {
+            this._starNum = 1;
+        } else if (this.progressBar.progress >= 1.0) {
+            this._starNum = 2;
+        }
+        this._updateStar();
     },
     _updateStar() {
         let len = this.spStarArr.length;

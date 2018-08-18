@@ -39,11 +39,17 @@ cc.Class({
 
     // update (dt) {},
     initView(data) {
+        this.spStarArr.forEach(_spStar => {
+            _spStar.node.active = false;
+        });
         this._data = data;
         this.lblStage.string = '关卡 ' + data.stage;
         this.lblStatus.string = data.status ? '通过' : '失败';
         this.btnNext.node.active = data.status;
         this.btnRetry.node.active = !this.btnNext.node.active;
+        for (let i = 0; i < data.starNum + 1; ++i) {
+            this.spStarArr[i].node.active = true;
+        }
     },
 
     onBtnClickToRetry() {
