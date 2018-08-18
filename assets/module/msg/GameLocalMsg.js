@@ -3,6 +3,7 @@ window.GameLocalMsg = {
         CloseLoading: 'GameLocalMsg.Msg.CloseLoading',
         GoGame: 'GameLocalMsg.Msg.GoGame',
         BallEndPos: 'GameLocalMsg.Msg.BallEndPos',
-        CanTouch: 'GameLocalMsg.Msg.CanTouch'
+        CanTouch: 'GameLocalMsg.Msg.CanTouch',
+        End: 'GameLocalMsg.Msg.End'
     }
 }

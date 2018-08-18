@@ -26,13 +26,19 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        endPre: { //end界面
+            displayName: 'endPre',
+            default: null,
+            type: cc.Prefab
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
     _getMsgList() {
         return [
             GameLocalMsg.Msg.CloseLoading,
-            GameLocalMsg.Msg.GoGame
+            GameLocalMsg.Msg.GoGame,
+            GameLocalMsg.Msg.End
         ];
     },
     _onMsg(msg, data) {
@@ -40,6 +46,8 @@ cc.Class({
             this._initMenu();
         } else if (msg === GameLocalMsg.Msg.GoGame) {
             this._initGame();
+        } else if (msg === GameLocalMsg.Msg.End) {
+            this._initEnd(data);
         }
     },
     onLoad() {
@@ -70,6 +78,12 @@ cc.Class({
         UIMgr.createPrefab(this.gamePre, function (root, ui) {
             this.addNode.addChild(root);
             ui.getComponent('Game').initView();
+        }.bind(this));
+    },
+    _initEnd(data) {
+        UIMgr.createPrefab(this.endPre, function (root, ui) {
+            this.addNode.addChild(root);
+            ui.getComponent('End').initView(data);
         }.bind(this));
     }
 });

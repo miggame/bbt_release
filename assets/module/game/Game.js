@@ -2,6 +2,7 @@ let GameCfg = require('GameCfg');
 let GameData = require('GameData');
 let UIMgr = require('UIMgr');
 let Observer = require('Observer');
+let ObserverMgr = require('ObserverMgr');
 cc.Class({
     extends: Observer,
 
@@ -92,13 +93,20 @@ cc.Class({
             default: null,
             type: cc.Button
         },
+        //展示warning
+        spWarning: {
+            displayName: 'spWarning',
+            default: null,
+            type: cc.Sprite
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
     _getMsgList() {
         return [
             GameLocalMsg.Msg.BallEndPos,
-            GameLocalMsg.Msg.CanTouch
+            GameLocalMsg.Msg.CanTouch,
+            GameLocalMsg.Msg.End
         ];
     },
     _onMsg(msg, data) {
@@ -112,6 +120,8 @@ cc.Class({
             this._showBackBall(data);
         } else if (msg === GameLocalMsg.Msg.CanTouch) {
             this._canTouch = true;
+        } else if (msg === GameLocalMsg.Msg.End) {
+            this._close();
         }
     },
     onLoad() {
@@ -221,6 +231,7 @@ cc.Class({
         }.bind(this));
     },
     _shootBall() {
+        this._hideWaring();
         let _touchV = this._touchP.sub(this._ballPos).normalizeSelf().mul(GameCfg.ballSpeed);
         let _ballNode = this._ballPool.get();
         if (!_ballNode) {
@@ -260,6 +271,7 @@ cc.Class({
         }
     },
     _reset() {
+        this._hideWaring();
         this._synBallCount();
         this._canTouch = true;
         this._showUIBall();
@@ -319,6 +331,7 @@ cc.Class({
                 this._showBlock(_type, _index, this.blockLayer, this._leftRow);
             }
         }
+        this._refreshEnd();
     },
     _canInclude(item, arr) {
         return arr.some((value) => {
@@ -345,8 +358,62 @@ cc.Class({
         });
         this.scheduleOnce(() => {
             this._reset();
+            this._moveBlocks();
         }, 0.5);
+    },
 
+    _refreshEnd() {
+        let _count = this.blockLayer.childrenCount;
+        let _leftCount = 0;
+        let _arr = [1, 2, 3, 4, 5, 6, 11, 12, 13];
+
+        for (let i = _count - 1; i >= 0; --i) {
+            let _block = this.blockLayer.children[i];
+            let _script = _block.getComponent('Block');
+            let _type = _script._type;
+            if (_arr.indexOf(_type) !== -1) {
+                _leftCount++;
+                if (this._checkWaring(_block)) {
+                    break;
+                }
+            }
+        }
+        if (_count === 0 || _leftCount <= 0) {
+            //展示结束界面
+            this._showEnd(true);
+        }
+    },
+    _checkWaring(block) {
+        let _blockH = this.blockLayer.width / GameCfg.defaultCol;
+        let _layerH = this.blockLayer.height;
+        let _distance = Math.abs(_layerH + block.y);
+        if (_distance <= _blockH * 1.5) {
+            this._showEnd(false);
+            return true;
+        }
+        if (_distance > _blockH * 1.5 && _distance < _blockH * 2.5) {
+            this._showWarning();
+            return true;
+        }
+    },
+    _showWarning() {
+        let fadeInAct = cc.fadeIn(1);
+        let fadeOutAct = cc.fadeOut(1);
+        this.spWarning.node.active = true;
+        this.spWarning.node.runAction(cc.repeatForever(cc.sequence(fadeInAct, fadeOutAct)));
+    },
+    _hideWaring() {
+        this.spWarning.node.stopAllActions();
+        this.spWarning.node.active = false;
+    },
+    _showEnd(flag) { //flag:true胜利，false失败
+        let _data = {
+            status: flag,
+            stage: GameCfg.curStage
+        }
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.End, _data);
+    },
+    _close() {
+        UIMgr.destroyUI(this);
     }
-
 });
