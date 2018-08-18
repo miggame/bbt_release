@@ -1,7 +1,7 @@
 let UIMgr = require('UIMgr');
 let GameData = require('GameData');
 let GameCfg = require('GameCfg');
-
+let ObserverMgr = require('ObserverMgr');
 cc.Class({
     extends: cc.Component,
 
@@ -114,6 +114,7 @@ cc.Class({
     _refreshHp() {
         if (this._hp <= 0) {
             this._pool.put(this.node);
+            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.UpdateScore, null);
             return;
         }
         this.lblScore.string = this._hp;

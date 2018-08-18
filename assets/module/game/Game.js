@@ -99,6 +99,20 @@ cc.Class({
             default: null,
             type: cc.Sprite
         },
+        //分数计算
+        _killCount: null,
+        _sumScore: null,
+        _maxScore: null,
+        lblTotalScore: {
+            displayName: 'lblTotalScore',
+            default: null,
+            type: cc.Label
+        },
+        progressBar: {
+            displayName: 'progressBar',
+            default: null,
+            type: cc.ProgressBar
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -106,7 +120,8 @@ cc.Class({
         return [
             GameLocalMsg.Msg.BallEndPos,
             GameLocalMsg.Msg.CanTouch,
-            GameLocalMsg.Msg.End
+            GameLocalMsg.Msg.End,
+            GameLocalMsg.Msg.UpdateScore
         ];
     },
     _onMsg(msg, data) {
@@ -122,6 +137,9 @@ cc.Class({
             this._canTouch = true;
         } else if (msg === GameLocalMsg.Msg.End) {
             this._close();
+        } else if (msg === GameLocalMsg.Msg.UpdateScore) {
+            this._killCount++;
+            this._refreshScore();
         }
     },
     onLoad() {
@@ -148,23 +166,26 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            cc.PhysicsManager.DrawBits.e_pairBit |
-            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit;
+        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+        //     cc.PhysicsManager.DrawBits.e_pairBit |
+        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     cc.PhysicsManager.DrawBits.e_jointBit |
+        //     cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
-        //展示ball
-        // this._synBallCount();
-        this._reset();
-        // this._showBall();
-        //展示block
+        //关卡基础数值
         let stageData = GameData.stageData;
         this._data1 = stageData.type.layer1.data;
         this._data2 = stageData.type.layer2.data;
         let len = this._data1.length;
         this._leftRow = len - parseInt(GameCfg.defaultCol);
+        //首次初始化得分
+        this._sumScore = 0;
+        this.lblTotalScore.string = this._sumScore;
+        this._calMaxScore(); //计算最高得分
+        //初始化UILayer及基本计数
+        this._reset();
+        //展示block
         for (let i = len - parseInt(GameCfg.defaultCol); i < len; ++i) {
             for (let j = 0; j < GameCfg.defaultCol; ++j) {
                 let _type = this._data1[i][j];
@@ -271,6 +292,7 @@ cc.Class({
         }
     },
     _reset() {
+        this._killCount = 0; //重置消失数量
         this._hideWaring();
         this._synBallCount();
         this._canTouch = true;
@@ -416,5 +438,33 @@ cc.Class({
     },
     _close() {
         UIMgr.destroyUI(this);
+    },
+    //计算关卡最高分
+    _calMaxScore() {
+        let _arr = [1, 2, 3, 4, 5, 6, 9];
+        let _len = 0;
+        let _len1 = this._data1.length;
+        let _len2 = this._data2.length;
+        for (let i = 0; i < _len1; ++i) {
+            for (let j = 0; j < _len2; ++j) {
+                if (_arr.indexOf(this._data1[i][j]) !== -1) {
+                    _len++;
+                }
+            }
+        }
+        for (let k = 0; k < _len; ++k) {
+            this._maxScore += (k + 1) * GameCfg.baseScore;
+        }
+    },
+    //刷新得分
+    _refreshScore() {
+        for (let i = 0; i < this._killCount; ++i) {
+            this._sumScore += (i + 1) * GameCfg.baseScore;
+        }
+        this.lblTotalScore.string = this._sumScore;
+        this._updateProgressBar();
+    },
+    _updateProgressBar() {
+        this.progressBar.progress = parseFloat(this._sumScore / this._maxScore).toFixed(1);
     }
 });

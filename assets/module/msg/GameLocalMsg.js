@@ -4,6 +4,7 @@ window.GameLocalMsg = {
         GoGame: 'GameLocalMsg.Msg.GoGame',
         BallEndPos: 'GameLocalMsg.Msg.BallEndPos',
         CanTouch: 'GameLocalMsg.Msg.CanTouch',
-        End: 'GameLocalMsg.Msg.End'
+        End: 'GameLocalMsg.Msg.End',
+        UpdateScore: 'UpdateScore'
     }
 }

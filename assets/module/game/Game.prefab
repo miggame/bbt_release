@@ -8563,6 +8563,15 @@
     },
     "spWarning": {
       "__id__": 249
+    },
+    "_killCount": null,
+    "_sumScore": null,
+    "_maxScore": null,
+    "lblTotalScore": {
+      "__id__": 14
+    },
+    "progressBar": {
+      "__id__": 35
     }
   },
   {
