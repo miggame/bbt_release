@@ -299,7 +299,7 @@ cc.Class({
     },
     _moveBlocks() { //type:11,12,13,20的block不移动
         let _h = this.blockLayer.width / GameCfg.defaultCol;
-        let _moveAct = cc.moveBy(1, cc.p(0, -_h));
+        let _moveAct = cc.moveBy(0.2, cc.p(0, -_h));
         let _blockArr = this.blockLayer.children;
         let _len = this.blockLayer.childrenCount;
         let _indexMap = [];
@@ -331,7 +331,8 @@ cc.Class({
                 this._showBlock(_type, _index, this.blockLayer, this._leftRow);
             }
         }
-        this._refreshEnd();
+        // this._refreshEnd();
+        this.scheduleOnce(this._refreshEnd, 0.5);
     },
     _canInclude(item, arr) {
         return arr.some((value) => {
@@ -352,8 +353,8 @@ cc.Class({
         this.ballLayer.children.forEach(_elem => {
             _elem.removeComponent(cc.PhysicsCircleCollider);
             _elem.removeComponent(cc.RigidBody);
-            _elem.runAction(cc.sequence(cc.moveTo(0.2, this._ballEndPos), cc.callFunc(() => {
-                this._blockPool.put(_elem);
+            _elem.runAction(cc.sequence(cc.moveTo(0.1, this._ballEndPos), cc.callFunc(() => {
+                _elem.destroy();
             })));
         });
         this.scheduleOnce(() => {
@@ -387,11 +388,11 @@ cc.Class({
         let _blockH = this.blockLayer.width / GameCfg.defaultCol;
         let _layerH = this.blockLayer.height;
         let _distance = Math.abs(_layerH + block.y);
-        if (_distance <= _blockH * 1.5) {
+        if (_distance <= _blockH * 0.5) {
             this._showEnd(false);
             return true;
         }
-        if (_distance > _blockH * 1.5 && _distance < _blockH * 2.5) {
+        if (_distance > _blockH * 0.5 && _distance < _blockH * 1.5) {
             this._showWarning();
             return true;
         }

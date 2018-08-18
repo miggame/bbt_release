@@ -173,7 +173,9 @@
     "_enabled": true,
     "spBall": {
       "__id__": 3
-    }
+    },
+    "_pool": null,
+    "_hitGround": 0
   },
   {
     "__type__": "cc.RigidBody",
