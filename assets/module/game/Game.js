@@ -113,6 +113,8 @@ cc.Class({
             default: null,
             type: cc.ProgressBar
         },
+        _starNum: 0,
+        spStarArr: [cc.Sprite]
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -134,7 +136,9 @@ cc.Class({
             }
             this._showBackBall(data);
         } else if (msg === GameLocalMsg.Msg.CanTouch) {
-            this._canTouch = true;
+            this._canTouch = true; //TODO可有可无？？
+            this._starNum = 0;
+            this._updateStar();
         } else if (msg === GameLocalMsg.Msg.End) {
             this._close();
         } else if (msg === GameLocalMsg.Msg.UpdateScore) {
@@ -183,6 +187,9 @@ cc.Class({
         this._sumScore = 0;
         this.lblTotalScore.string = this._sumScore;
         this._calMaxScore(); //计算最高得分
+        this.spStarArr.forEach(_spStar => {
+            _spStar.node.active = false;
+        });
         //初始化UILayer及基本计数
         this._reset();
         //展示block
@@ -455,16 +462,25 @@ cc.Class({
         for (let k = 0; k < _len; ++k) {
             this._maxScore += (k + 1) * GameCfg.baseScore;
         }
+        console.log('this._maxScore: ', this._maxScore);
     },
     //刷新得分
     _refreshScore() {
-        for (let i = 0; i < this._killCount; ++i) {
-            this._sumScore += (i + 1) * GameCfg.baseScore;
-        }
+        this._sumScore += this._killCount * GameCfg.baseScore;
+        console.log('this._killCount: ', this._killCount);
+        console.log('this._sumScore: ', this._sumScore);
         this.lblTotalScore.string = this._sumScore;
         this._updateProgressBar();
     },
     _updateProgressBar() {
         this.progressBar.progress = parseFloat(this._sumScore / this._maxScore).toFixed(1);
+    },
+    _updateStar() {
+        let len = this.spStarArr.length;
+        for (let i = 0; i < len; ++i) {
+            if (i === this._starNum) {
+                this.spStarArr[i].node.active = true;
+            }
+        }
     }
 });
