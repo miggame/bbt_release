@@ -148,7 +148,7 @@ cc.Class({
         //展示ball
         // this._synBallCount();
         this._reset();
-        this._showBall();
+        // this._showBall();
         //展示block
         let stageData = GameData.stageData;
         this._data1 = stageData.type.layer1.data;
@@ -167,9 +167,6 @@ cc.Class({
     },
     _synBallCount() {
         this._ballCount = GameData.ballCount;
-    },
-    _synSpBallPos() {
-        this._ballPos = this.spBall.node.position;
     },
 
     _showBlock(type, index, parentNode, leftRow) { //展示block
@@ -191,15 +188,7 @@ cc.Class({
         }.bind(this));
     },
 
-    //展示ball
-    _showBall() {
-        this._shootBallCount = 0; //发射出来人小球数
-        this._backBallCount = 0; //返回小球数
-        this.spBall.node.x = 0;
-        this.spBall.node.y = -this.ballLayer.height + this.spBall.node.height * 0.5;
-        // this._ballPos = this.spBall.node.position;
-        this._refreshBallCount();
-    },
+
     _refreshBallCount() {
         this.lblBallCount.node.active = true;
         this.lblBallCount.string = 'x' + this._ballCount;
@@ -272,22 +261,29 @@ cc.Class({
     },
     _reset() {
         this._synBallCount();
-        this._synSpBallPos();
-        // this.spBallTemp.node.active = false;
         this._canTouch = true;
         this._showUIBall();
         this._showBtnBack();
         this._ballEndPos = null;
         this._shootBallCount = 0; //发射出来人小球数
         this._backBallCount = 0; //返回小球数
-
+    },
+    //展示ball
+    _showBall() {
+        // this.spBall.node.x = 0;
+        if (this._ballEndPos !== null) {
+            this.spBall.node.position = this._ballEndPos;
+        } else {
+            this.spBall.node.y = -this.ballLayer.height + this.spBall.node.height * 0.5;
+            this.spBall.node.x = 0;
+        }
+        this._ballPos = this.spBall.node.position;
+        this._refreshBallCount();
     },
     _showUIBall() {
         this.spBall.node.active = this._canTouch ? true : false;
         this.spBallTemp.node.active = !this.spBall.node.active;
-        console.log('this.spBall.node.active: ', this.spBall.node.active);
-        console.log('this.spBallTemp.node.active: ', this.spBallTemp.node.active);
-        this._refreshBallCount();
+        this._showBall();
     },
     _moveBlocks() { //type:11,12,13,20的block不移动
         let _h = this.blockLayer.width / GameCfg.defaultCol;
@@ -337,15 +333,20 @@ cc.Class({
         this._canTouch = true;
         this._showBtnBack();
         this.unschedule(this._shootBall, this);
+        if (this._ballEndPos === null) {
+            this._ballEndPos = this.spBall.node.position;
+        }
         this.ballLayer.children.forEach(_elem => {
-            console.log('_elem: ', _elem);
             _elem.removeComponent(cc.PhysicsCircleCollider);
             _elem.removeComponent(cc.RigidBody);
-            _elem.runAction(cc.moveTo(5, this._ballEndPos));
-        })
-        // while (this.ballLayer.childrenCount > 0) {
-        //     this._ballPool.put(this.ballLayer.children[0]);
-        // }
+            _elem.runAction(cc.sequence(cc.moveTo(0.2, this._ballEndPos), cc.callFunc(() => {
+                this._blockPool.put(_elem);
+            })));
+        });
+        this.scheduleOnce(() => {
+            this._reset();
+        }, 0.5);
+
     }
 
 });
