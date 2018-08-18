@@ -55,5 +55,10 @@ cc.Class({
     onBtnClickToRetry() {
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
         UIMgr.destroyUI(this);
+    },
+
+    onBtnClickToNext() {
+        // ObserverMgr.dispatchMsg(GameLocalMsg.Msg.Next, )
+        UIMgr.destroyUI(this);
     }
 });

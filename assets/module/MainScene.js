@@ -38,7 +38,8 @@ cc.Class({
         return [
             GameLocalMsg.Msg.CloseLoading,
             GameLocalMsg.Msg.GoGame,
-            GameLocalMsg.Msg.End
+            GameLocalMsg.Msg.End,
+            GameLocalMsg.Msg.Next
         ];
     },
     _onMsg(msg, data) {
@@ -48,6 +49,8 @@ cc.Class({
             this._initGame();
         } else if (msg === GameLocalMsg.Msg.End) {
             this._initEnd(data);
+        } else if (msg === GameLocalMsg.Msg.Next) {
+
         }
     },
     onLoad() {
