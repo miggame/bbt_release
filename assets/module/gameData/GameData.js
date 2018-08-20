@@ -15,7 +15,6 @@ module.exports = {
         this.ballCount = this.gamedata_savelv['stageinfo' + index][0];
     },
     getStarNum(index) {
-        console.log('this.gamedata_savelv["stageinfo" + index]: ', this.gamedata_savelv['stageinfo' + index]);
         return this.gamedata_savelv['stageinfo' + index][1];
     },
     setStarNum(index, value) {

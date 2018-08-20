@@ -84,14 +84,12 @@ cc.Class({
     // },
     _initPhysics(type) {
         let _points = [];
+        let w = this.node.width * 0.5;
         let _p0 = cc.v2(-w, -w);
         let _p1 = cc.v2(w, -w);
         let _p2 = cc.v2(w, w);
         let _p3 = cc.v2(-w, w);
-        let w = this.node.width * 0.5;
-        if (type === 1 || type === 2) {
-            _points = [_p0, _p1, _p2, _p3];
-        } else if (type === 3) {
+        if (type === 3) {
             _points = [_p0, _p1, _p3];
         } else if (type === 4) {
             _points = [_p0, _p1, _p2];
@@ -99,8 +97,11 @@ cc.Class({
             _points = [_p1, _p2, _p3];
         } else if (type === 6) {
             _points = [_p0, _p2, _p3];
+        } else {
+            _points = [_p0, _p1, _p2, _p3];
         }
-        let _phyCollider = this.node.addComponent(cc.PhysicsBoxCollider);
+        let _phyCollider = this.node.getComponent(cc.PhysicsPolygonCollider);
+        _phyCollider.tag = 1;
         _phyCollider.points = _points;
         _phyCollider.apply();
     },
