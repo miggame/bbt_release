@@ -9,17 +9,17 @@ module.exports = {
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
-        this.curStage = cc.sys.localStorage.getItem('CurStage');
-        if (this.curStagestage === undefined || this.curStage === null) {
-            this.curStage = 1;
-            this.saveCurStage();
+        let _curStage = cc.sys.localStorage.getItem('CurStage');
+        if (_curStage === undefined || _curStage === null) {
+            _curStage = 1;
+            this.saveCurStage(_curStage);
         }
     },
-    saveCurStage() {
-        cc.sys.localStorage.setItem('CurStage', this.curStage);
+    saveCurStage(value) {
+        cc.sys.localStorage.setItem('CurStage', value);
     },
     getCurStage() {
-        return this.curStage;
+        return cc.sys.localStorage.getItem('CurStage');
     },
     getStageCfg() {
         return JSON.parse(cc.sys.localStorage.getItem('StageCfg'));

@@ -439,7 +439,7 @@ cc.Class({
     _showEnd(flag) { //flag:true胜利，false失败
         let _data = {
             status: flag,
-            stage: GameCfg.curStage,
+            stage: GameCfg.getCurStage(),
             starNum: this._starNum
         };
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.End, _data);

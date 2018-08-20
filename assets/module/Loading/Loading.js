@@ -50,6 +50,7 @@ cc.Class({
             } else {
                 GameData.gamedata_savelv = _stageCfg;
             }
+            console.log('GameData.gamedata_savelv: ', GameData.gamedata_savelv);
             GameData.mapdata = asset;
             ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
             this.scheduleOnce(this._close, 1);

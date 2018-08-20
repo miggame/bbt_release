@@ -61,14 +61,15 @@ cc.Class({
 
     onBtnClickToNext() {
         let _stage = this._data.stage;
-        GameCfg.curStage = _stage + 1;
-        GameCfg.saveCurStage(); //保存当前关卡
+        let _nextStage = parseInt(_stage) + 1;
+        GameCfg.saveCurStage(_nextStage); //保存当前关卡
+        console.log('GameCfg: ', GameCfg.getCurStage());
         let _curStar = GameData.getStarNum(_stage);
         if (_curStar < this._data.starNum) {
             GameData.setStarNum(_stage, this._data.starNum);
             GameCfg.saveStageCfg(GameData.gamedata_savelv);
         }
-        GameData.initStageData(_stage + 1); //初始化下一关数据
+        GameData.initStageData(_nextStage); //初始化下一关数据
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
         UIMgr.destroyUI(this);
     },
