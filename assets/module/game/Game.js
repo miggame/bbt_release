@@ -332,14 +332,19 @@ cc.Class({
         let _h = this.blockLayer.width / GameCfg.defaultCol;
         let _moveAct = cc.moveBy(0.2, cc.p(0, -_h));
         let _blockArr = this.blockLayer.children;
-        let _len = this.blockLayer.childrenCount;
         let _indexMap = [];
         _blockArr.forEach(_elem => {
-            let _tempIndex = _elem.getComponent('Block')._index;
-            _indexMap.push(_tempIndex);
+            if (_elem.getComponent('Block').isUsed === true) {
+                _elem.getComponent('Block').isUsed = false;
+                this._blockPool.put(_elem);
+            } else {
+                let _tempIndex = _elem.getComponent('Block')._index;
+                _indexMap.push(_tempIndex);
+            }
         });
+        let _len = this.blockLayer.childrenCount;
         for (let i = _len - 1; i >= 0; --i) {
-            let _lastBlock = _blockArr[i];
+            let _lastBlock = this.blockLayer.children[i];
             let _script = _lastBlock.getComponent('Block');
             let _type = _script._type;
             let _index = _script._index;
