@@ -63,7 +63,6 @@ cc.Class({
         let _stage = this._data.stage;
         let _nextStage = parseInt(_stage) + 1;
         GameCfg.saveCurStage(_nextStage); //保存当前关卡
-        console.log('GameCfg: ', GameCfg.getCurStage());
         let _curStar = GameData.getStarNum(_stage);
         if (_curStar < this._data.starNum) {
             GameData.setStarNum(_stage, this._data.starNum);

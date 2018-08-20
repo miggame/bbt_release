@@ -46,13 +46,15 @@ cc.Class({
         let y = index.y;
         let vWidth = parentNode.width;
         this.node.height = this.node.width = vWidth / GameCfg.defaultCol;
-        this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x) + leftRow * this.node.height; //锚点（0.5， 1）
+        this.node.y = -(this.node.height + this.node.height * 0.5 + this.node.height * x) + leftRow * this.node.height; //父节点锚点（0.5， 1）
         this.node.x = (y - Math.floor(GameCfg.defaultCol * 0.5)) * this.node.width;
+
         if (isPreview !== false) {
             this.lblScore.node.active = false;
             return;
         }
         this._initHp(type, index);
+
         this._initPhysics(type, index);
     },
 
@@ -67,21 +69,12 @@ cc.Class({
             } else {
                 this._hp = parseInt(type * baseScore);
             }
+            this._refreshHp();
+        } else { //道具等blocks
+            this.lblScore.node.active = false;
         }
         this._resetLabelPos(this._type);
-        this._refreshHp();
     },
-    // _refreshHp() {
-    //     if (this._hp === 0) {
-    //         this.lblScore.node.active = false;
-    //         return;
-    //     }
-    //     if (this._hp > 0) {
-    //         this.lblScore.node.active = true;
-    //         this.lblScore.string = this._hp;
-    //         return;
-    //     }
-    // },
     _initPhysics(type) {
         let _points = [];
         let w = this.node.width * 0.5;
@@ -101,6 +94,9 @@ cc.Class({
             _points = [_p0, _p1, _p2, _p3];
         }
         let _phyCollider = this.node.getComponent(cc.PhysicsPolygonCollider);
+        if (type === 21 || type === 22 || type === 23 || type === 24 || type === 7 || type === 8) { //圆形 
+            _phyCollider.sensor = true;
+        }
         _phyCollider.tag = 1;
         _phyCollider.points = _points;
         _phyCollider.apply();

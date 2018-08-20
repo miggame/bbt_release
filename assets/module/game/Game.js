@@ -170,11 +170,11 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            cc.PhysicsManager.DrawBits.e_pairBit |
-            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit;
+        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+        //     cc.PhysicsManager.DrawBits.e_pairBit |
+        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     cc.PhysicsManager.DrawBits.e_jointBit |
+        //     cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
         //关卡基础数值
@@ -183,6 +183,7 @@ cc.Class({
         this._data2 = stageData.type.layer2.data;
         let len = this._data1.length;
         this._leftRow = len - parseInt(GameCfg.defaultCol);
+
         //首次初始化得分
         this._sumScore = 0;
         this.lblTotalScore.string = this._sumScore;
@@ -193,6 +194,7 @@ cc.Class({
         //初始化UILayer及基本计数
         this._reset();
         //展示block
+        this.blockLayer.destroyAllChildren();
         for (let i = len - parseInt(GameCfg.defaultCol); i < len; ++i) {
             for (let j = 0; j < GameCfg.defaultCol; ++j) {
                 let _type = this._data1[i][j];
