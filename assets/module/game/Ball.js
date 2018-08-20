@@ -26,9 +26,9 @@ cc.Class({
     initView(V, pool) { //v代表速度向量
         this._pool = pool;
         let _phyBody = this.node.getComponent(cc.RigidBody);
-        let vel = _phyBody.linearVelocity;
-        vel = V;
-        _phyBody.linearVelocity = vel;
+        let _vel = _phyBody.linearVelocity;
+        _vel = V;
+        _phyBody.linearVelocity = _vel;
         // this.node.getComponent(cc.RigidBody).enabledContactListener = true;
     },
 
@@ -36,6 +36,13 @@ cc.Class({
         switch (other.tag) {
             case 1:
                 other.node.getComponent('Block').hit();
+                if (other.node.getComponent('Block')._type === 24) {
+                    let _v = self.node.getComponent(cc.RigidBody).linearVelocity;
+                    let _radianArr = [0, -Math.PI / 6, Math.PI / 6];
+                    let _randIndex = Math.floor(cc.rand() % 3);
+                    _v.rotateSelf(_radianArr[_randIndex]);
+                    self.node.getComponent(cc.RigidBody).linearVelocity = _v;
+                }
                 break;
             case 2:
                 this._hitGround++;

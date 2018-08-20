@@ -111,9 +111,18 @@ cc.Class({
     },
 
     hit() {
-        let _tempArr = [1, 2, 3, 4, 5, 6, 9]; //有数值砖块类型
+        let _tempArr = [1, 2, 3, 4, 5, 6, 9, 11]; //有数值砖块类型
         if (_tempArr.indexOf(this._type) !== -1) {
             this._hp--;
+            if (this._hp <= 0 && this._type === 9) {
+                this.node.parent.children.forEach(_block => {
+                    let _script = _block.getComponent('Block');
+                    if (_script._index.x === this._index.x && _script._index.y !== this._index.y) {
+                        this._pool.put(_block);
+                        // _block.destroy();
+                    }
+                });
+            }
             this._refreshHp();
             return;
         }
@@ -132,7 +141,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.x === this._index.x) {
-                    if ([1, 2, 3, 4, 5, 6, 9].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script._refreshHp();
                     }
@@ -146,7 +155,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.y === this._index.y) {
-                    if ([1, 2, 3, 4, 5, 6, 9].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script._refreshHp();
                     }
@@ -154,7 +163,9 @@ cc.Class({
             });
             return;
         }
-
+        if (this._type === 24) {
+            this.isUsed = true;
+        }
     },
     _refreshHp() {
         if (this._hp <= 0) {
