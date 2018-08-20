@@ -137,7 +137,7 @@ cc.Class({
             this._showBackBall(data);
         } else if (msg === GameLocalMsg.Msg.CanTouch) {
             this._canTouch = true; //TODO可有可无？？
-            this._starNum = 0;
+            this._starNum = 1;
             this._updateStar();
         } else if (msg === GameLocalMsg.Msg.End) {
             this._close();
@@ -463,7 +463,6 @@ cc.Class({
         for (let k = 0; k < _len; ++k) {
             this._maxScore += (k + 1) * GameCfg.baseScore;
         }
-        console.log('this._maxScore: ', this._maxScore);
     },
     //刷新得分
     _refreshScore() {
@@ -474,16 +473,16 @@ cc.Class({
     _updateProgressBar() {
         this.progressBar.progress = parseFloat(this._sumScore / this._maxScore).toFixed(1);
         if (this.progressBar.progress >= 0.7 && this.progressBar.progress < 1.0) {
-            this._starNum = 1;
-        } else if (this.progressBar.progress >= 1.0) {
             this._starNum = 2;
+        } else if (this.progressBar.progress >= 1.0) {
+            this._starNum = 3;
         }
         this._updateStar();
     },
     _updateStar() {
         let len = this.spStarArr.length;
         for (let i = 0; i < len; ++i) {
-            if (i === this._starNum) {
+            if (i === this._starNum - 1) {
                 this.spStarArr[i].node.active = true;
             }
         }

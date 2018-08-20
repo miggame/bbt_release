@@ -14,11 +14,6 @@ module.exports = {
             this.curStage = 1;
             this.saveCurStage();
         }
-        this.stageCfg = JSON.parse(cc.sys.localStorage.getItem('StageCfg'));
-        if (this.stageCfg === undefined || this.stageCfg === null) {
-            this.stageCfg = new Object();
-            this.saveStageCfg();
-        }
     },
     saveCurStage() {
         cc.sys.localStorage.setItem('CurStage', this.curStage);
@@ -27,22 +22,9 @@ module.exports = {
         return this.curStage;
     },
     getStageCfg() {
-        return this.stageCfg;
+        return JSON.parse(cc.sys.localStorage.getItem('StageCfg'));
     },
-    saveStageCfg() {
-        cc.sys.localStorage.setItem('StageCfg', JSON.stringify(this.stageCfg));
-    },
-    getStageCfgOfStar(index) {
-        if (this.stageCfg['stage' + index] === undefined) {
-            this.stageCfg['stage' + index] = new Object();
-            if (this.stageCfg['stage' + index].star === undefined) {
-                this.stageCfg['stage' + index].star = new Object();
-            }
-            this.stageCfg['stage' + index].star = 0;
-            this.saveStageCfg();
-            return this.stageCfg['stage' + index].star;
-        } else {
-            return this.stageCfg['stage' + index].star;
-        }
+    saveStageCfg(obj) {
+        cc.sys.localStorage.setItem('StageCfg', JSON.stringify(obj));
     },
 }

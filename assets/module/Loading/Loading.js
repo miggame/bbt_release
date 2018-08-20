@@ -1,4 +1,6 @@
 let GameData = require('GameData');
+let GameCfg = require('GameCfg');
+
 let Observer = require('Observer');
 let ObserverMgr = require('ObserverMgr');
 let UIMgr = require('UIMgr');
@@ -41,9 +43,15 @@ cc.Class({
                 console.log('加载地图json出错: ', err);
                 return;
             }
-            GameData.gamedata_savelv = asset.shift().json;
+            let _savelv = asset.shift();
+            let _stageCfg = GameCfg.getStageCfg();
+            if (_stageCfg === undefined || _stageCfg === null) {
+                GameData.gamedata_savelv = _savelv.json;
+            } else {
+                GameData.gamedata_savelv = _stageCfg;
+            }
             GameData.mapdata = asset;
-            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.CloseLoading, null);
+            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
             this.scheduleOnce(this._close, 1);
 
         }.bind(this));

@@ -60,7 +60,7 @@ cc.Class({
         let baseScore = this._data2[index.x][index.y];
         let _arr = [1, 2, 3, 4, 5, 6, 9, 11];
         if (_arr.indexOf(type) !== -1) {
-            if (type === 9) {
+            if (type === 9 || type === 3 || type === 4 || type === 5 || type === 6) {
                 this._hp = parseInt(1 * baseScore);
             } else if (type === 11) {
                 this._hp = parseInt(2 * baseScore);
@@ -68,19 +68,20 @@ cc.Class({
                 this._hp = parseInt(type * baseScore);
             }
         }
+        this._resetLabelPos(this._type);
         this._refreshHp();
     },
-    _refreshHp() {
-        if (this._hp === 0) {
-            this.lblScore.node.active = false;
-            return;
-        }
-        if (this._hp > 0) {
-            this.lblScore.node.active = true;
-            this.lblScore.string = this._hp;
-            return;
-        }
-    },
+    // _refreshHp() {
+    //     if (this._hp === 0) {
+    //         this.lblScore.node.active = false;
+    //         return;
+    //     }
+    //     if (this._hp > 0) {
+    //         this.lblScore.node.active = true;
+    //         this.lblScore.string = this._hp;
+    //         return;
+    //     }
+    // },
     _initPhysics(type) {
         let _points = [];
         let _p0 = cc.v2(-w, -w);
@@ -91,13 +92,13 @@ cc.Class({
         if (type === 1 || type === 2) {
             _points = [_p0, _p1, _p2, _p3];
         } else if (type === 3) {
-            _points = [p0, p1, p3];
+            _points = [_p0, _p1, _p3];
         } else if (type === 4) {
-            _points = [p0, p1, p2];
+            _points = [_p0, _p1, _p2];
         } else if (type === 5) {
-            _points = [p1, p2, p3];
+            _points = [_p1, _p2, _p3];
         } else if (type === 6) {
-            _points = [p0, p2, p3];
+            _points = [_p0, _p2, _p3];
         }
         let _phyCollider = this.node.addComponent(cc.PhysicsBoxCollider);
         _phyCollider.points = _points;
@@ -118,5 +119,22 @@ cc.Class({
             return;
         }
         this.lblScore.string = this._hp;
+    },
+    _resetLabelPos(type) {
+        let _w = this.node.width * 0.5;
+        let _h = this.node.height * 0.5;
+        let pos = null;
+        if (type === 3) {
+            pos = cc.v2(_w, _h).scaleSelf(cc.v2(-0.3, -0.3));
+        } else if (type === 4) {
+            pos = cc.v2(_w, _h).scaleSelf(cc.v2(0.3, -0.3));
+        } else if (type === 5) {
+            pos = cc.v2(_w, _h).scaleSelf(cc.v2(0.3, 0.3));
+        } else if (type === 6) {
+            pos = cc.v2(_w, _h).scaleSelf(cc.v2(-0.3, 0.3));
+        } else {
+            pos = cc.v2(_w, _h).scaleSelf(cc.v2(0, 0));
+        }
+        this.lblScore.node.position = pos;
     }
 });

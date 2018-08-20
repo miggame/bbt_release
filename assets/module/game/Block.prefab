@@ -300,7 +300,8 @@
     "_index": null,
     "_data1": null,
     "_data2": null,
-    "_hp": null
+    "_hp": null,
+    "_pool": null
   },
   {
     "__type__": "cc.RigidBody",

@@ -45,14 +45,17 @@ cc.Class({
             this.lblStage.string = index;
             let path = 'menu/mainmenu_img_stageunlockbg';
             UIMgr.changeSpImg(path, this.spStage);
-            let starNum = GameCfg.getStageCfgOfStar(index);
-            this._showStageStar(starNum);
+            let _starNum = GameData.getStarNum(index);
+            if (_starNum === undefined) {
+                return;
+            }
+            this._showStageStar(_starNum);
         }
     },
 
     _showStageStar(starNum) {
         for (let i = 0; i < starNum; ++i) {
-            this.starArr[i].node.active = false;
+            this.starArr[i].node.active = true;
         }
     },
 

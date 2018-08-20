@@ -1,5 +1,7 @@
 let ObserverMgr = require('ObserverMgr');
 let UIMgr = require('UIMgr');
+let GameCfg = require('GameCfg');
+let GameData = require('GameData');
 
 cc.Class({
     extends: cc.Component,
@@ -47,7 +49,7 @@ cc.Class({
         this.lblStatus.string = data.status ? '通过' : '失败';
         this.btnNext.node.active = data.status;
         this.btnRetry.node.active = !this.btnNext.node.active;
-        for (let i = 0; i < data.starNum + 1; ++i) {
+        for (let i = 0; i < data.starNum; ++i) {
             this.spStarArr[i].node.active = true;
         }
     },
@@ -58,7 +60,21 @@ cc.Class({
     },
 
     onBtnClickToNext() {
-        // ObserverMgr.dispatchMsg(GameLocalMsg.Msg.Next, )
+        let _stage = this._data.stage;
+        GameCfg.curStage = _stage + 1;
+        GameCfg.saveCurStage(); //保存当前关卡
+        let _curStar = GameData.getStarNum(_stage);
+        if (_curStar < this._data.starNum) {
+            GameData.setStarNum(_stage, this._data.starNum);
+            GameCfg.saveStageCfg(GameData.gamedata_savelv);
+        }
+        GameData.initStageData(_stage + 1); //初始化下一关数据
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
+        UIMgr.destroyUI(this);
+    },
+
+    onBtnClickToHome() {
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
         UIMgr.destroyUI(this);
     }
 });

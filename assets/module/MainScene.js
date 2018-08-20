@@ -36,20 +36,20 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
     _getMsgList() {
         return [
-            GameLocalMsg.Msg.CloseLoading,
+            GameLocalMsg.Msg.GoMenu,
             GameLocalMsg.Msg.GoGame,
             GameLocalMsg.Msg.End,
             GameLocalMsg.Msg.Next
         ];
     },
     _onMsg(msg, data) {
-        if (msg === GameLocalMsg.Msg.CloseLoading) {
+        if (msg === GameLocalMsg.Msg.GoMenu) {
             this._initMenu();
         } else if (msg === GameLocalMsg.Msg.GoGame) {
             this._initGame();
         } else if (msg === GameLocalMsg.Msg.End) {
             this._initEnd(data);
-        } else if (msg === GameLocalMsg.Msg.Next) {
+        } else if (msg === GameLocalMsg.Msg.GoHome) {
 
         }
     },
