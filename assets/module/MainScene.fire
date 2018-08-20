@@ -192,6 +192,9 @@
     },
     "endPre": {
       "__uuid__": "acad3e05-b960-4acf-b849-478d5614fb2c"
+    },
+    "pausePre": {
+      "__uuid__": "ffc2d492-39b8-4a72-a6c5-94da935b521a"
     }
   }
 ]

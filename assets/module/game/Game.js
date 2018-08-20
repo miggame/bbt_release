@@ -123,7 +123,8 @@ cc.Class({
             GameLocalMsg.Msg.BallEndPos,
             GameLocalMsg.Msg.CanTouch,
             GameLocalMsg.Msg.End,
-            GameLocalMsg.Msg.UpdateScore
+            GameLocalMsg.Msg.UpdateScore,
+            GameLocalMsg.Msg.PauseRetry
         ];
     },
     _onMsg(msg, data) {
@@ -144,6 +145,9 @@ cc.Class({
         } else if (msg === GameLocalMsg.Msg.UpdateScore) {
             this._killCount++;
             this._refreshScore();
+        } else if (msg === GameLocalMsg.Msg.PauseRetry) { //关闭暂停界面且关闭游戏界面
+            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
+            this._close();
         }
     },
     onLoad() {
@@ -493,5 +497,10 @@ cc.Class({
                 this.spStarArr[i].node.active = true;
             }
         }
+    },
+
+    //暂停界面
+    onBtnClickToPause() {
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.Pause, null);
     }
 });

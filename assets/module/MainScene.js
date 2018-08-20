@@ -31,6 +31,11 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        pausePre: { //pause界面
+            displayName: 'pausePre',
+            default: null,
+            type: cc.Prefab
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -39,7 +44,7 @@ cc.Class({
             GameLocalMsg.Msg.GoMenu,
             GameLocalMsg.Msg.GoGame,
             GameLocalMsg.Msg.End,
-            GameLocalMsg.Msg.Next
+            GameLocalMsg.Msg.Pause
         ];
     },
     _onMsg(msg, data) {
@@ -49,8 +54,8 @@ cc.Class({
             this._initGame();
         } else if (msg === GameLocalMsg.Msg.End) {
             this._initEnd(data);
-        } else if (msg === GameLocalMsg.Msg.GoHome) {
-
+        } else if (msg === GameLocalMsg.Msg.Pause) {
+            this._initPause();
         }
     },
     onLoad() {
@@ -87,6 +92,11 @@ cc.Class({
         UIMgr.createPrefab(this.endPre, function (root, ui) {
             this.addNode.addChild(root);
             ui.getComponent('End').initView(data);
+        }.bind(this));
+    },
+    _initPause() {
+        UIMgr.createPrefab(this.pausePre, function (root, ui) {
+            this.addNode.addChild(root);
         }.bind(this));
     }
 });
