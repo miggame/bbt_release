@@ -358,6 +358,10 @@ cc.Class({
                     _script._index.x++; //TODO ???
                     _lastBlock.runAction(_moveAct.clone());
                 }
+            } else if (_type === 12 || _type === 13) {
+                let _isOpen = _script._isOpen
+                _script._isOpen = !_isOpen;
+                _script.playAct();
             }
         }
         //显示一行剩余的blocks

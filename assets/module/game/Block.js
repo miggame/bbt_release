@@ -22,7 +22,26 @@ cc.Class({
         _data2: null,
         _hp: null,
         _pool: null, //节点池
-        isUsed: false //道具block是否使用过
+        isUsed: false, //道具block是否使用过
+
+        //特殊类型
+        xmarkLayout: { //type:11
+            displayName: 'xmarkLayout',
+            default: null,
+            type: cc.Node
+        },
+        //type:12关闭，13打开
+        spLeft: {
+            displayName: 'spLeft',
+            default: null,
+            type: cc.Sprite
+        },
+        spRight: {
+            displayName: 'spRight',
+            default: null,
+            type: cc.Sprite
+        },
+        _isOpen: true
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -33,6 +52,7 @@ cc.Class({
         this._data2 = stageData.type.layer2.data;
         this._hp = 0;
         this.isUsed = false;
+        this._isOpen = true;
     },
 
     start() {},
@@ -43,6 +63,30 @@ cc.Class({
         this._type = type;
         this._index = index;
         let path = 'game/game_img_block' + type + '_1';
+        //特殊类型
+        if (type === 11 || type === 12 || type === 13 || type === 20) {
+            path = 'game/game_img_block1_1';
+            this.xmarkLayout.active = true;
+
+            let _parent = this.spLeft.node.parent;
+            let _w = _parent.width * 0.5;
+            this.spLeft.node.width = this.spRight.node.width = _w;
+            this.spLeft.node.active = this.spRight.node.active = false; //特指type=11
+            if (type === 12) { //关闭
+                this.spLeft.node.x = 0.1 * _w;
+                this.spRight.node.x = -0.1 * _w;
+                this.spLeft.node.active = this.spRight.node.active = true;
+                this._isOpen = false;
+            } else if (type === 13) { //打开
+                this.spLeft.node.x = -_w * 0.8;
+                this.spRight.node.x = _w * 0.8;
+                this.spLeft.node.active = this.spRight.node.active = true;
+            }
+        } else {
+            this.xmarkLayout.active = false;
+            this.spLeft.node.active = this.spRight.node.active = false;
+        }
+
         UIMgr.changeSpImg(path, this.spBlock);
         let x = index.x;
         let y = index.y;
@@ -62,9 +106,9 @@ cc.Class({
 
     _initHp(type, index) {
         let baseScore = this._data2[index.x][index.y];
-        let _arr = [1, 2, 3, 4, 5, 6, 9, 11]; //有生命值的blocks
+        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13]; //有生命值的blocks
         if (_arr.indexOf(type) !== -1) {
-            if (type === 9 || type === 3 || type === 4 || type === 5 || type === 6) {
+            if (type === 9 || type === 3 || type === 4 || type === 5 || type === 6 || type === 12 || type === 13) {
                 this._hp = parseInt(1 * baseScore);
             } else if (type === 11) {
                 this._hp = parseInt(2 * baseScore);
@@ -76,6 +120,8 @@ cc.Class({
             this.lblScore.node.active = false;
         }
         this._resetLabelPos(this._type);
+
+
     },
     _initPhysics(type) {
         let _points = [];
@@ -111,8 +157,11 @@ cc.Class({
     },
 
     hit() {
-        let _tempArr = [1, 2, 3, 4, 5, 6, 9, 11]; //有数值砖块类型
+        let _tempArr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13]; //有数值砖块类型
         if (_tempArr.indexOf(this._type) !== -1) {
+            if (this._isOpen === false) {
+                return;
+            }
             this._hp--;
             if (this._hp <= 0 && this._type === 9) {
                 this.node.parent.children.forEach(_block => {
@@ -141,7 +190,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.x === this._index.x) {
-                    if ([1, 2, 3, 4, 5, 6, 9, 11].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script._refreshHp();
                     }
@@ -155,7 +204,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.y === this._index.y) {
-                    if ([1, 2, 3, 4, 5, 6, 9, 11].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script._refreshHp();
                     }
@@ -191,5 +240,22 @@ cc.Class({
             pos = cc.v2(_w, _h).scaleSelf(cc.v2(0, 0));
         }
         this.lblScore.node.position = pos;
+    },
+
+    playAct() {
+        let _parent = this.spLeft.node.parent;
+        let _w = _parent.width * 0.5;
+
+        if (this._isOpen) {
+            let _leftOpenAct = cc.moveBy(0.2, cc.v2(-0.9 * _w, 0));
+            let _rightOpenAct = cc.moveBy(0.2, cc.v2(0.9 * _w, 0));
+            this.spLeft.node.runAction(_leftOpenAct);
+            this.spRight.node.runAction(_rightOpenAct);
+        } else {
+            let _leftCloseAct = cc.moveBy(0.2, cc.v2(0.9 * _w, 0));
+            let _rightCloseAct = cc.moveBy(0.2, cc.v2(-0.9 * _w, 0));
+            this.spLeft.node.runAction(_leftCloseAct);
+            this.spRight.node.runAction(_rightCloseAct);
+        }
     }
 });
