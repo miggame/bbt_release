@@ -2,6 +2,7 @@ let ObserverMgr = require('ObserverMgr');
 let UIMgr = require('UIMgr');
 let GameCfg = require('GameCfg');
 let GameData = require('GameData');
+let AudioMgr = require('AudioMgr');
 
 cc.Class({
     extends: cc.Component,
@@ -51,6 +52,11 @@ cc.Class({
         this.btnRetry.node.active = !this.btnNext.node.active;
         for (let i = 0; i < data.starNum; ++i) {
             this.spStarArr[i].node.active = true;
+        }
+        if (data.status) {
+            AudioMgr.playWinSound();
+        } else {
+            AudioMgr.playFailSound();
         }
     },
 

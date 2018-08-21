@@ -28,10 +28,13 @@
       },
       {
         "__id__": 22
+      },
+      {
+        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 25
     },
     "_id": "",
     "_opacity": 255,
@@ -749,6 +752,16 @@
     "component": "Stage",
     "handler": "onBtnClickToStage",
     "customEventData": ""
+  },
+  {
+    "__type__": "00fa0GbWrpGC7tfqeDi2y/I",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "clickSound": null
   },
   {
     "__type__": "cc.PrefabInfo",

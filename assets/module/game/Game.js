@@ -195,11 +195,11 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            cc.PhysicsManager.DrawBits.e_pairBit |
-            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit;
+        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+        //     cc.PhysicsManager.DrawBits.e_pairBit |
+        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     cc.PhysicsManager.DrawBits.e_jointBit |
+        //     cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
         //关卡基础数值
@@ -209,7 +209,10 @@ cc.Class({
         let len = this._data1.length;
         this._leftRow = len - parseInt(GameCfg.defaultCol);
 
-        //初始化提示画线
+        //隐藏射线及初始化提示画线
+        this.hintLayer.children.forEach(_elem => {
+            _elem.active = false;
+        });
         for (let i = 0; i < GameCfg.dotCount; ++i) {
             let _dotNode = cc.instantiate(this.spDot.node);
             this.dotLayout.addChild(_dotNode);
@@ -283,6 +286,10 @@ cc.Class({
         }.bind(this));
         this.ballLayer.on('touchend', function (event) {
             if (this._canTouch) {
+                this.hintLayer.children.forEach(_elem => { //隐藏射线提示线
+                    _elem.active = false;
+                });
+
                 this._hidePhysics(true); //显示block物理
                 this.spHintDot.node.active = false;
                 this._canTouch = false;
@@ -382,9 +389,9 @@ cc.Class({
         this._shootBallCount = 0; //发射出来人小球数
         this._backBallCount = 0; //返回小球数
 
-        this.hintLayer.children.forEach(_elem => {
-            _elem.active = false;
-        });
+        // this.hintLayer.children.forEach(_elem => {
+        //     _elem.active = false;
+        // });
     },
     //展示ball
     _showBall() {

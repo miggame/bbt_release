@@ -1,4 +1,6 @@
 let ObserverMgr = require('ObserverMgr');
+let AudioMgr = require('AudioMgr');
+
 cc.Class({
     extends: cc.Component,
 
@@ -33,8 +35,10 @@ cc.Class({
     },
 
     onBeginContact(contact, self, other) { //tag:block-1, ground-2,wall-3
+
         switch (other.tag) {
             case 1:
+                AudioMgr.playHitSound();
                 other.node.getComponent('Block').hit();
                 if (other.node.getComponent('Block')._type === 24) {
                     let _v = self.node.getComponent(cc.RigidBody).linearVelocity;
@@ -47,6 +51,7 @@ cc.Class({
             case 2:
                 this._hitGround++;
                 if (this._hitGround >= 2) {
+                    AudioMgr.playHitSound();
                     let pos = this.node.position;
                     this._pool.put(this.node);
                     this._hitGround = 0;
