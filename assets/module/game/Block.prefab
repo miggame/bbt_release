@@ -1277,7 +1277,8 @@
     },
     "spRight": {
       "__id__": 31
-    }
+    },
+    "_isOpen": true
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -410,7 +410,7 @@ cc.Class({
     _refreshEnd() {
         let _count = this.blockLayer.childrenCount;
         let _leftCount = 0;
-        let _arr = [1, 2, 3, 4, 5, 6, 11, 12, 13];
+        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13];
 
         for (let i = _count - 1; i >= 0; --i) {
             let _block = this.blockLayer.children[i];

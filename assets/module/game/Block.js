@@ -63,9 +63,12 @@ cc.Class({
         this._type = type;
         this._index = index;
         let path = 'game/game_img_block' + type + '_1';
-        //特殊类型
-        if (type === 11 || type === 12 || type === 13 || type === 20) {
+        if ([11, 12, 13].indexOf(type) !== -1) {
             path = 'game/game_img_block1_1';
+        }
+        //特殊类型
+        if (type === 11 || type === 12 || type === 13 || type === 20) { //type:20为纯阻碍block
+            // path = 'game/game_img_block1_1';
             this.xmarkLayout.active = true;
 
             let _parent = this.spLeft.node.parent;
@@ -167,8 +170,8 @@ cc.Class({
                 this.node.parent.children.forEach(_block => {
                     let _script = _block.getComponent('Block');
                     if (_script._index.x === this._index.x && _script._index.y !== this._index.y) {
-                        this._pool.put(_block);
-                        // _block.destroy();
+                        // this._pool.put(_block);//TODO???用节点池回收不全，达不到预期效果
+                        _block.destroy();
                     }
                 });
             }
