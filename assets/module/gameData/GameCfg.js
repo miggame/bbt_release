@@ -5,7 +5,9 @@ module.exports = {
     stageCfg: null, //所有关卡配置,
     defaultCol: 11, //关卡列数,
     ballSpeed: 2000, //小球速度,
-    baseScore: 10, //基础分数
+    baseScore: 10, //基础分数,
+    lineLength: 1500, //提示线长度
+    dotCount: 10, //提示点数量
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;

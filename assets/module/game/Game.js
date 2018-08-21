@@ -114,7 +114,28 @@ cc.Class({
             type: cc.ProgressBar
         },
         _starNum: 0,
-        spStarArr: [cc.Sprite]
+        spStarArr: [cc.Sprite],
+        //射线层
+        hintLayer: {
+            displayName: 'hintLayer',
+            default: null,
+            type: cc.Node
+        },
+        spHintDot: {
+            displayName: 'spHintDot',
+            default: null,
+            type: cc.Sprite
+        },
+        spDot: {
+            displayName: 'spDot',
+            default: null,
+            type: cc.Sprite
+        },
+        dotLayout: {
+            displayName: 'dotLayout',
+            default: null,
+            type: cc.Node
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -174,11 +195,11 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-        //     cc.PhysicsManager.DrawBits.e_pairBit |
-        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-        //     cc.PhysicsManager.DrawBits.e_jointBit |
-        //     cc.PhysicsManager.DrawBits.e_shapeBit;
+        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+            cc.PhysicsManager.DrawBits.e_pairBit |
+            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+            cc.PhysicsManager.DrawBits.e_jointBit |
+            cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
         //关卡基础数值
@@ -187,6 +208,12 @@ cc.Class({
         this._data2 = stageData.type.layer2.data;
         let len = this._data1.length;
         this._leftRow = len - parseInt(GameCfg.defaultCol);
+
+        //初始化提示画线
+        for (let i = 0; i < GameCfg.dotCount; ++i) {
+            let _dotNode = cc.instantiate(this.spDot.node);
+            this.dotLayout.addChild(_dotNode);
+        }
 
         //首次初始化得分
         this._sumScore = 0;
@@ -232,7 +259,6 @@ cc.Class({
         }.bind(this));
     },
 
-
     _refreshBallCount() {
         this.lblBallCount.node.active = true;
         this.lblBallCount.string = 'x' + this._ballCount;
@@ -243,17 +269,22 @@ cc.Class({
         this._canTouch = false;
         this.ballLayer.on('touchstart', function (event) {
             if (this._canTouch) {
+                this._hidePhysics(false); //隐藏block物理
                 this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
+                this._drawLine(this.spBall.node.position, this._touchP);
             }
         }.bind(this));
         this.ballLayer.on('touchmove', function (event) {
             if (this._canTouch) {
                 this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
-                let _touchV = this._touchP.sub(this._ballPos).normalizeSelf();
+                this._hidePhysics(false); //隐藏block物理
+                this._drawLine(this.spBall.node.position, this._touchP);
             }
         }.bind(this));
         this.ballLayer.on('touchend', function (event) {
             if (this._canTouch) {
+                this._hidePhysics(true); //显示block物理
+                this.spHintDot.node.active = false;
                 this._canTouch = false;
                 this._touchP = this.ballLayer.convertToNodeSpaceAR(event.getLocation());
                 this.schedule(this._shootBall, 0.2, this._ballCount - 1, 0);
@@ -263,6 +294,18 @@ cc.Class({
         this.ballLayer.on('touchcancel', function (event) {
 
         }.bind(this));
+    },
+    _hidePhysics(flag) {
+        this.blockLayer.children.forEach(_elem => {
+            if (_elem.getComponent(cc.PhysicsCircleCollider) !== null) {
+                _elem.getComponent(cc.PhysicsCircleCollider).enabled = flag;
+                return;
+            }
+            if (_elem.getComponent(cc.PhysicsPolygonCollider) !== null) {
+                _elem.getComponent(cc.PhysicsPolygonCollider).enabled = flag;
+                return;
+            }
+        });
     },
     _shootBall() {
         this._hideWaring();
@@ -275,6 +318,30 @@ cc.Class({
         _ballNode.position = this.spBall.node.position;
         _ballNode.getComponent('Ball').initView(_touchV, this._ballPool);
         this._refreshCurBallCount(); //刷新当前小球数
+    },
+    _drawLine(p0, p1) {
+        let _touchV = p1.sub(p0).normalize();
+        let _V = _touchV.mul(GameCfg.lineLength);
+        let _p0 = p0;
+        let _p1 = p0.add(_V);
+        let _result = this.physicsManager.rayCast(this.ballLayer.convertToWorldSpaceAR(_p0), this.ballLayer.convertToWorldSpaceAR(_p1))[0];
+        let _point = _result.point;
+        let _normal = _result.normal;
+        let _localPoint = this.ballLayer.convertToNodeSpaceAR(_point);
+        this._showHint(_localPoint, _normal, p0);
+    },
+    _showHint(point, normal, basePos) {
+        this.dotLayout.active = true;
+        this.spHintDot.node.active = true;
+        this.spHintDot.node.position = point;
+        let _dirV = point.sub(basePos);
+        let _perV = _dirV.div(GameCfg.dotCount);
+        for (const key in this.dotLayout.children) {
+            if (this.dotLayout.children.hasOwnProperty(key)) {
+                let _dotNode = this.dotLayout.children[key];
+                _dotNode.position = basePos.add(_perV.mul(key));
+            }
+        }
     },
     _showBackBall(pos) {
         let _backBall = cc.instantiate(this.spBall.node); //cc.instantiate参数必须是node 
@@ -314,6 +381,10 @@ cc.Class({
         this._ballEndPos = null;
         this._shootBallCount = 0; //发射出来人小球数
         this._backBallCount = 0; //返回小球数
+
+        this.hintLayer.children.forEach(_elem => {
+            _elem.active = false;
+        });
     },
     //展示ball
     _showBall() {
