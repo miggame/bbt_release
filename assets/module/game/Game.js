@@ -418,7 +418,8 @@ cc.Class({
         _blockArr.forEach(_elem => {
             if (_elem.getComponent('Block').isUsed === true) {
                 _elem.getComponent('Block').isUsed = false;
-                this._blockPool.put(_elem);
+                // this._blockPool.put(_elem);
+                _elem.destroy(); //必须用这个。因为nodepool要求提取和放回的node不能有任何后期的处理
             } else {
                 let _tempIndex = _elem.getComponent('Block')._index;
                 _indexMap.push(_tempIndex);
