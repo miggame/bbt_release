@@ -221,7 +221,8 @@ cc.Class({
     },
     _refreshHp() {
         if (this._hp <= 0) {
-            this._pool.put(this.node);
+            // this._pool.put(this.node);
+            this.node.destroy();
             ObserverMgr.dispatchMsg(GameLocalMsg.Msg.UpdateScore, null);
             return;
         }

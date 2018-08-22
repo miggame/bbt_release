@@ -539,6 +539,8 @@ cc.Class({
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.End, _data);
     },
     _close() {
+        this._ballPool.clear();
+        this._blockPool.clear();
         UIMgr.destroyUI(this);
     },
     //计算关卡最高分
