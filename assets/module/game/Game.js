@@ -136,6 +136,9 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        //道具使用
+        ballPlusFlag: false,
+        blockPlusFlag: false
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -391,6 +394,22 @@ cc.Class({
         }
     },
     _reset() {
+        //道具使用后的重置
+        if (this.ballPlusFlag) {
+            this.ballPlusFlag = false;
+            GameData.ballCount = GameData.ballCount - GameCfg.ballPlusCount;
+        } else {
+            this.ballPlusCount = false;
+        }
+        if (this.blockPlusFlag) {
+            this.blockPlusFlag = false;
+            this.blockLayer.children.forEach(_block => {
+                if (_block.name === 'plusBlock') {
+                    _block.destroy();
+                }
+            });
+        }
+
         this._killCount = 0; //重置消失数量
         this._hideWaring();
         this._synBallCount();
@@ -599,5 +618,92 @@ cc.Class({
     //暂停界面
     onBtnClickToPause() {
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.Pause, null);
+    },
+
+    onBtnClickToItem(e) {
+        switch (e.target.name) {
+            case 'btnItem0':
+                this.blockLayer.children.forEach(_elem => {
+                    let _type = _elem.getComponent('Block')._type;
+                    let _hp = _elem.getComponent('Block')._hp;
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                        _elem.getComponent('Block')._hp = Math.floor(_hp * 0.5);
+                        _elem.getComponent('Block').refreshHp();
+                    }
+                });
+                this.scheduleOnce(this._refreshEnd, 0.5);
+                break;
+            case 'btnItem1':
+                this.ballPlusFlag = true;
+                GameData.ballCount = GameData.ballCount + GameCfg.ballPlusCount;
+                this._synBallCount();
+                this._refreshBallCount();
+                break;
+            case 'btnItem2':
+                let _arr = [];
+                this.blockLayer.children.forEach(_block => {
+                    let _type = _block.getComponent('Block')._type;
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                        _arr.push(_block.getLocalZOrder());
+                    }
+                });
+                let _max = Math.max(..._arr);
+                this.blockLayer.children.forEach(_block => {
+                    let _type = _block.getComponent('Block')._type;
+                    if (_block.getLocalZOrder() === _max && [1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                        _block.destroy();
+                    }
+                });
+                this.scheduleOnce(this._refreshEnd, 0.5);
+                break;
+            case 'btnItem3':
+                let _xArr = [];
+                let _indexMap = [];
+                // let _count = 0;
+                this.blockLayer.children.forEach(_block => {
+                    let _type = _block.getComponent('Block')._type;
+                    let _index = _block.getComponent('Block')._index
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                        _xArr.push(_index.x);
+                        _indexMap.push(_index);
+                    }
+                });
+                let _xMax = Math.max(..._xArr);
+                let _xMin = Math.min(..._xArr);
+                for (let i = 0; i < 4; ++i) {
+                    let _type = 0;
+                    if (i < 2) {
+                        _type = 8;
+                    } else {
+                        _type = 7;
+                    }
+                    this._showUniqueBlock(_xMin, _xMax, _indexMap, _type);
+                }
+                break;
+            case 'btnItem4':
+                this.blockPlusFlag = true;
+                for (let j = 6; j < 11; ++j) {
+                    let _type = 20;
+                    let _blockNode = this._blockPool.get();
+                    if (!_blockNode) {
+                        _blockNode = cc.instantiate(this.blockPre);
+                    }
+                    this.blockLayer.addChild(_blockNode);
+                    _blockNode.getComponent('Block').initView(_type, cc.v2(0, j), this.blockLayer, this._blockPool, 0);
+                    _blockNode.y = -this.blockLayer.height + _blockNode.height * 0.5;
+                    _blockNode.name = 'plusBlock';
+                }
+                break;
+        }
+    },
+    _showUniqueBlock(min, max, arr, type) { //道具4的功能：空位上生成道具
+        let _r = Math.floor(cc.random0To1() * max) + min;
+        let _c = Math.floor(cc.random0To1() * GameCfg.defaultCol);
+        let _index = cc.v2(_r, _c);
+        if (!this._canInclude(_index, arr)) {
+            this._showBlock(type, _index, this.blockLayer, 0);
+        } else {
+            this._showUniqueBlock(min, max, arr, type);
+        }
     }
 });

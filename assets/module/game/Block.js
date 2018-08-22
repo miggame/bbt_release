@@ -62,6 +62,7 @@ cc.Class({
         this._pool = pool;
         this._type = type;
         this._index = index;
+        this.node.setLocalZOrder(index.x);
         let path = 'game/game_img_block' + type + '_1';
         if ([11, 12, 13].indexOf(type) !== -1) {
             path = 'game/game_img_block1_1';
@@ -118,7 +119,7 @@ cc.Class({
             } else {
                 this._hp = parseInt(type * baseScore);
             }
-            this._refreshHp();
+            this.refreshHp();
         } else { //道具等blocks
             this.lblScore.node.active = false;
         }
@@ -175,7 +176,7 @@ cc.Class({
                     }
                 });
             }
-            this._refreshHp();
+            this.refreshHp();
             return;
         }
         if ([21, 22, 23].indexOf(this._type) !== -1) {
@@ -195,7 +196,7 @@ cc.Class({
                 if (_script._index.x === this._index.x) {
                     if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
                         _script._hp--;
-                        _script._refreshHp();
+                        _script.refreshHp();
                     }
                 }
             });
@@ -209,7 +210,7 @@ cc.Class({
                 if (_script._index.y === this._index.y) {
                     if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
                         _script._hp--;
-                        _script._refreshHp();
+                        _script.refreshHp();
                     }
                 }
             });
@@ -219,7 +220,7 @@ cc.Class({
             this.isUsed = true;
         }
     },
-    _refreshHp() {
+    refreshHp() {
         if (this._hp <= 0) {
             // this._pool.put(this.node);
             this.node.destroy();

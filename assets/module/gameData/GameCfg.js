@@ -7,7 +7,8 @@ module.exports = {
     ballSpeed: 2000, //小球速度,
     baseScore: 10, //基础分数,
     lineLength: 1500, //提示线长度
-    dotCount: 20, //提示点数量
+    dotCount: 20, //提示点数量,
+    ballPlusCount: 30, //道具增加小球数量
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
