@@ -328,6 +328,10 @@ cc.Class({
     },
     _drawLine(p0, p1) {
         let _touchV = p1.sub(p0).normalize();
+        let _radian = _touchV.angle(cc.v2(1, 0));
+        if (_radian < 0.14 || _radian > 3) { //限制角度
+            return;
+        }
         let _V = _touchV.mul(GameCfg.lineLength);
         let _p0 = p0;
         let _p1 = p0.add(_V);
@@ -342,11 +346,19 @@ cc.Class({
         this.spHintDot.node.active = true;
         this.spHintDot.node.position = point;
         let _dirV = point.sub(basePos);
-        let _perV = _dirV.div(GameCfg.dotCount);
+        let _perV = _dirV.div(GameCfg.dotCount * 0.7);
+        let _midKey = GameCfg.dotCount * 0.7;
         for (const key in this.dotLayout.children) {
             if (this.dotLayout.children.hasOwnProperty(key)) {
                 let _dotNode = this.dotLayout.children[key];
                 _dotNode.position = basePos.add(_perV.mul(key));
+                if (key > _midKey) {
+                    if (normal.y === 0) {
+                        _dotNode.x = this.dotLayout.children[_midKey - (key - _midKey)].x;
+                    } else if (normal.x === 0) {
+                        _dotNode.y = this.dotLayout.children[_midKey - (key - _midKey)].y;
+                    }
+                }
             }
         }
     },
