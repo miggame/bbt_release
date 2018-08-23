@@ -1,6 +1,7 @@
 let GameData = require('GameData');
 let Observer = require('Observer');
 let UIMgr = require('UIMgr');
+let GameCfg = require('GameCfg');
 
 cc.Class({
     extends: Observer,
@@ -16,6 +17,21 @@ cc.Class({
             displayName: 'scrollView',
             default: null,
             type: cc.ScrollView
+        },
+        lblRuby: {
+            displayName: 'lblRuby',
+            default: null,
+            type: cc.Label
+        },
+        lblTime: {
+            displayName: 'lblTime',
+            default: null,
+            type: cc.Label
+        },
+        lblStar: {
+            displayName: 'lblStar',
+            default: null,
+            type: cc.Label
         },
     },
 
@@ -57,6 +73,8 @@ cc.Class({
             this.scrollView.content.addChild(_stageNode);
             _stageNode.getComponent('Stage').initView(i + 1);
         }
+        this.lblStar.string = GameCfg.totalStar;
+        this.lblRuby.string = GameCfg.totalRuby;
     },
     _close() {
         UIMgr.destroyUI(this);

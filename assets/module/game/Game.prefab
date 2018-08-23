@@ -3719,9 +3719,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 128,
+      "g": 139,
+      "b": 159,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -9336,7 +9336,9 @@
     },
     "dotLayout": {
       "__id__": 116
-    }
+    },
+    "ballPlusFlag": false,
+    "blockPlusFlag": false
   },
   {
     "__type__": "cc.PrefabInfo",

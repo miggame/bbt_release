@@ -9,6 +9,10 @@ module.exports = {
     lineLength: 1500, //提示线长度
     dotCount: 20, //提示点数量,
     ballPlusCount: 30, //道具增加小球数量
+    //道具及成绩相关数据
+    totalStar: 0,
+    totalRuby: 0,
+
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
@@ -17,6 +21,9 @@ module.exports = {
             _curStage = 1;
             this.saveCurStage(_curStage);
         }
+        this.getTotalStar(); //初始化totalStar
+        this.getTotalRuby(); //初始化totalRuby
+
     },
     saveCurStage(value) {
         cc.sys.localStorage.setItem('CurStage', value);
@@ -30,4 +37,20 @@ module.exports = {
     saveStageCfg(obj) {
         cc.sys.localStorage.setItem('StageCfg', JSON.stringify(obj));
     },
+    getTotalStar() {
+        let _star = 0;
+        let _stageData = this.getStageCfg();
+        for (const _key in _stageData) {
+            if (_stageData.hasOwnProperty(_key)) {
+                const _elem = _stageData[_key];
+                _star += _elem[1];
+            }
+        }
+        this.totalStar = _star;
+        return _star;
+    },
+    getTotalRuby() {
+        let _ruby = this.totalRuby;
+        return _ruby;
+    }
 }

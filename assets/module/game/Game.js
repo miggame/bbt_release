@@ -441,7 +441,7 @@ cc.Class({
         this.spBallTemp.node.active = !this.spBall.node.active;
         this._showBall();
     },
-    _moveBlocks() { //type:11,12,13,20的block不移动
+    _moveBlocks() { //type:11,12,13,16,17,20的block不移动
         let _h = this.blockLayer.width / GameCfg.defaultCol;
         let _moveAct = cc.moveBy(0.2, cc.p(0, -_h));
         let _blockArr = this.blockLayer.children;
@@ -463,12 +463,12 @@ cc.Class({
             let _type = _script._type;
             let _index = _script._index;
             let _newIndex = _index.add(cc.v2(1, 0));
-            if ([11, 12, 13, 20].indexOf(_type) === -1) {
+            if ([11, 12, 13, 16, 17, 20].indexOf(_type) === -1) {
                 if (!this._canInclude(_newIndex, _indexMap)) {
                     _script._index.x++; //TODO ???
                     _lastBlock.runAction(_moveAct.clone());
                 }
-            } else if (_type === 12 || _type === 13) {
+            } else if (_type === 12 || _type === 13 || _type === 16 || _type === 17) {
                 let _isOpen = _script._isOpen
                 _script._isOpen = !_isOpen;
                 _script.playAct();
@@ -520,7 +520,7 @@ cc.Class({
     _refreshEnd() {
         let _count = this.blockLayer.childrenCount;
         let _leftCount = 0;
-        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13];
+        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17];
 
         for (let i = _count - 1; i >= 0; --i) {
             let _block = this.blockLayer.children[i];
@@ -626,7 +626,7 @@ cc.Class({
                 this.blockLayer.children.forEach(_elem => {
                     let _type = _elem.getComponent('Block')._type;
                     let _hp = _elem.getComponent('Block')._hp;
-                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_type) !== -1) {
                         _elem.getComponent('Block')._hp = Math.floor(_hp * 0.5);
                         _elem.getComponent('Block').refreshHp();
                     }
@@ -643,14 +643,14 @@ cc.Class({
                 let _arr = [];
                 this.blockLayer.children.forEach(_block => {
                     let _type = _block.getComponent('Block')._type;
-                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_type) !== -1) {
                         _arr.push(_block.getLocalZOrder());
                     }
                 });
                 let _max = Math.max(..._arr);
                 this.blockLayer.children.forEach(_block => {
                     let _type = _block.getComponent('Block')._type;
-                    if (_block.getLocalZOrder() === _max && [1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                    if (_block.getLocalZOrder() === _max && [1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_type) !== -1) {
                         _block.destroy();
                     }
                 });
@@ -663,7 +663,7 @@ cc.Class({
                 this.blockLayer.children.forEach(_block => {
                     let _type = _block.getComponent('Block')._type;
                     let _index = _block.getComponent('Block')._index
-                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_type) !== -1) {
                         _xArr.push(_index.x);
                         _indexMap.push(_index);
                     }

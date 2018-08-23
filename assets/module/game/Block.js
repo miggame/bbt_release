@@ -64,11 +64,11 @@ cc.Class({
         this._index = index;
         this.node.setLocalZOrder(index.x);
         let path = 'game/game_img_block' + type + '_1';
-        if ([11, 12, 13].indexOf(type) !== -1) {
+        if ([11, 12, 13, 16, 17].indexOf(type) !== -1) {
             path = 'game/game_img_block1_1';
         }
         //特殊类型
-        if (type === 11 || type === 12 || type === 13 || type === 20) { //type:20为纯阻碍block
+        if (type === 11 || type === 12 || type === 13 || type === 20 || type === 16 || type === 17) { //type:20为纯阻碍block
             // path = 'game/game_img_block1_1';
             this.xmarkLayout.active = true;
 
@@ -76,12 +76,12 @@ cc.Class({
             let _w = _parent.width * 0.5;
             this.spLeft.node.width = this.spRight.node.width = _w;
             this.spLeft.node.active = this.spRight.node.active = false; //特指type=11
-            if (type === 12) { //关闭
+            if (type === 12 || type === 16) { //关闭
                 this.spLeft.node.x = 0.1 * _w;
                 this.spRight.node.x = -0.1 * _w;
                 this.spLeft.node.active = this.spRight.node.active = true;
                 this._isOpen = false;
-            } else if (type === 13) { //打开
+            } else if (type === 13 || type === 17) { //打开
                 this.spLeft.node.x = -_w * 0.8;
                 this.spRight.node.x = _w * 0.8;
                 this.spLeft.node.active = this.spRight.node.active = true;
@@ -110,9 +110,9 @@ cc.Class({
 
     _initHp(type, index) {
         let baseScore = this._data2[index.x][index.y];
-        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13]; //有生命值的blocks
+        let _arr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17]; //有生命值的blocks
         if (_arr.indexOf(type) !== -1) {
-            if (type === 9 || type === 3 || type === 4 || type === 5 || type === 6 || type === 12 || type === 13) {
+            if (type === 9 || type === 3 || type === 4 || type === 5 || type === 6 || type === 12 || type === 13 || type === 16 || type === 17) {
                 this._hp = parseInt(1 * baseScore);
             } else if (type === 11) {
                 this._hp = parseInt(2 * baseScore);
@@ -161,7 +161,7 @@ cc.Class({
     },
 
     hit() {
-        let _tempArr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13]; //有数值砖块类型
+        let _tempArr = [1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17]; //有数值砖块类型
         if (_tempArr.indexOf(this._type) !== -1) {
             if (this._isOpen === false) {
                 return;
@@ -194,7 +194,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.x === this._index.x) {
-                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script.refreshHp();
                     }
@@ -208,7 +208,7 @@ cc.Class({
             _tempArr.forEach(_block => {
                 let _script = _block.getComponent('Block')
                 if (_script._index.y === this._index.y) {
-                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13].indexOf(_script._type) !== -1) {
+                    if ([1, 2, 3, 4, 5, 6, 9, 11, 12, 13, 16, 17].indexOf(_script._type) !== -1) {
                         _script._hp--;
                         _script.refreshHp();
                     }
