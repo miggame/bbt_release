@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "7f84d9ab-82b4-45db-815f-35d5a4ecdcae",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ball_img_pentagon22_0_2": {
+      "ver": "1.0.3",
+      "uuid": "7281d93e-9bc6-4654-a513-c61f394184a6",
+      "rawTextureUuid": "7f84d9ab-82b4-45db-815f-35d5a4ecdcae",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 22,
+      "height": 22,
+      "rawWidth": 22,
+      "rawHeight": 22,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "3fdf13fe-5d93-429f-bb67-61d498d5922d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ball_img_javelin26_0_4": {
+      "ver": "1.0.3",
+      "uuid": "05f31fbe-89ab-4c6b-bdb4-3c7fdba8532c",
+      "rawTextureUuid": "3fdf13fe-5d93-429f-bb67-61d498d5922d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 26,
+      "height": 26,
+      "rawWidth": 26,
+      "rawHeight": 26,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

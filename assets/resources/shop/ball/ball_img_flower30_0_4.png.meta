@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "d388eb59-2e8c-496f-90b0-8f874051e205",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ball_img_flower30_0_4": {
+      "ver": "1.0.3",
+      "uuid": "29a5cda7-4b50-4288-a1ca-d5262df9bbd4",
+      "rawTextureUuid": "d388eb59-2e8c-496f-90b0-8f874051e205",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 30,
+      "height": 30,
+      "rawWidth": 30,
+      "rawHeight": 30,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
