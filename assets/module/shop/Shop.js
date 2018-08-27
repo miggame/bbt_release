@@ -34,10 +34,15 @@ cc.Class({
     },
 
     initView(i) {
-        let _index = 0;
+
+        this._showShop();
+    },
+
+    _showShop() {
         this.scrollView.content.destroyAllChildren();
         let _typeArr = ['circle', 'triangle', 'diamond', 'javelin', 'pentagon', 'star', 'flower'];
         let _sizeArr = [14, 18, 22, 26, 30];
+        let _index = 0;
         for (let i = 0; i < _sizeArr.length; ++i) {
             for (let j = 0; j < _typeArr.length; ++j) {
                 _index++;
@@ -52,5 +57,35 @@ cc.Class({
         let _defaultIndex = 8;
         this.scrollView.content.addChild(_defaultShopItem);
         _defaultShopItem.getComponent('ShopItem').initView(_defaultPath, 'circle', 18, _defaultIndex);
+    },
+
+    _showRuby() {
+        this.scrollView.content.destroyAllChildren();
+        let _typeArr = [
+            'mzq',
+            'ads_1',
+            'ruby1',
+            'ruby2',
+            'ruby3',
+            'ruby4',
+            'ruby5',
+            'ruby6',
+            'ruby7',
+            'ruby8',
+            'ruby9'
+        ];
+        let _nameArr = [
+            '黄金瞄准',
+            '移除广告',
+            '20',
+            '100',
+            '200',
+            '300',
+            '550',
+            '1150',
+            '3600',
+            '6250',
+            '15000'
+        ];
     }
 });

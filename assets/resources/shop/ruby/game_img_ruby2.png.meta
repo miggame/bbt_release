@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "bcb7de39-9a53-4b26-a8c8-031fbc297f0a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "game_img_ruby2": {
+      "ver": "1.0.3",
+      "uuid": "1a1d1215-6acb-4ef3-bc1b-e43d28d8640c",
+      "rawTextureUuid": "bcb7de39-9a53-4b26-a8c8-031fbc297f0a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 2,
+      "trimX": 29,
+      "trimY": 3,
+      "width": 76,
+      "height": 86,
+      "rawWidth": 134,
+      "rawHeight": 96,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
