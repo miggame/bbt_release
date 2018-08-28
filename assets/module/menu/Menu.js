@@ -47,8 +47,15 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        //商城
         shopPre: {
             displayName: 'shopPre',
+            default: null,
+            type: cc.Prefab
+        },
+        //签到
+        signPre: {
+            displayName: 'signPre',
             default: null,
             type: cc.Prefab
         },
@@ -82,6 +89,7 @@ cc.Class({
 
     // update (dt) {},
     initView() {
+        this._showSign();
         this.scrollView.content.destroyAllChildren();
         let len = GameData.mapdata.length;
         for (let i = 0; i < len; ++i) {
@@ -224,6 +232,13 @@ cc.Class({
         UIMgr.createPrefab(this.shopPre, function (root, ui) {
             this.addNode.addChild(root);
             ui.getComponent('Shop').initView(i);
+        }.bind(this));
+    },
+
+    _showSign() {
+        UIMgr.createPrefab(this.signPre, function (root, ui) {
+            this.addNode.addChild(root);
+            // ui.getComponent('Shop').initView(i);
         }.bind(this));
     }
 });
