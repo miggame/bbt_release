@@ -214,7 +214,13 @@ cc.Class({
         }
     },
 
-    onBtnClickToShop() {
+    onBtnClickToShop(e) {
+        let i = 0;
+        if (e.target.name === 'mainmenu_btn_shop') {
+            i = 0;
+        } else if (e.target.name === 'mainmenu_btn_ball') {
+            i = 1;
+        }
         UIMgr.createPrefab(this.shopPre, function (root, ui) {
             this.addNode.addChild(root);
             ui.getComponent('Shop').initView(i);

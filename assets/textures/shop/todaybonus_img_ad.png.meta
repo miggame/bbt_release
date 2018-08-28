@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "ce2a0fc1-d2d1-4abe-a41d-c49a106e5503",
+  "uuid": "ad5160ca-26e5-4b12-90d9-245fdb4f85f2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "game_img_ads_1": {
+    "todaybonus_img_ad": {
       "ver": "1.0.3",
-      "uuid": "537a3583-47d0-42f0-8851-03c91782542b",
-      "rawTextureUuid": "ce2a0fc1-d2d1-4abe-a41d-c49a106e5503",
+      "uuid": "0a4a3eb4-d53f-48b4-9692-b25baf15839e",
+      "rawTextureUuid": "ad5160ca-26e5-4b12-90d9-245fdb4f85f2",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 70,
-      "height": 72,
-      "rawWidth": 70,
-      "rawHeight": 72,
+      "width": 54,
+      "height": 54,
+      "rawWidth": 54,
+      "rawHeight": 54,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

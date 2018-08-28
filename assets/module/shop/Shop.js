@@ -1,4 +1,5 @@
 let UIMgr = require('UIMgr');
+let ShopModule = require('ShopModule');
 
 cc.Class({
     extends: cc.Component,
@@ -9,10 +10,30 @@ cc.Class({
             default: null,
             type: cc.ScrollView
         },
-        shopItemPre: {
-            displayName: 'shopItemPre',
+        ballItemPre: {
+            displayName: 'ballItemPre',
             default: null,
             type: cc.Prefab
+        },
+        rubyItemPre: {
+            displayName: 'rubyItemPre',
+            default: null,
+            type: cc.Prefab
+        },
+        btnRuby: {
+            displayName: 'btnRuby',
+            default: null,
+            type: cc.Button
+        },
+        btnBall: {
+            displayName: 'btnBall',
+            default: null,
+            type: cc.Button
+        },
+        btnGift: {
+            displayName: 'btnGift',
+            default: null,
+            type: cc.Button
         },
     },
 
@@ -33,59 +54,58 @@ cc.Class({
         UIMgr.destroyUI(this);
     },
 
-    initView(i) {
-
-        this._showShop();
+    initView(i) { //0:ruby,1:shop
+        this._showShadow(i);
+        if (i === 0) {
+            this._showRuby();
+        } else if (i === 1) {
+            this._showBall();
+        }
     },
 
-    _showShop() {
+    _showBall() {
         this.scrollView.content.destroyAllChildren();
-        let _typeArr = ['circle', 'triangle', 'diamond', 'javelin', 'pentagon', 'star', 'flower'];
-        let _sizeArr = [14, 18, 22, 26, 30];
-        let _index = 0;
-        for (let i = 0; i < _sizeArr.length; ++i) {
-            for (let j = 0; j < _typeArr.length; ++j) {
-                _index++;
-                let _path = 'shop/ball/ball_img_' + _typeArr[j] + _sizeArr[i] + '_0_1';
-                let _shopItem = cc.instantiate(this.shopItemPre);
-                this.scrollView.content.addChild(_shopItem);
-                _shopItem.getComponent('ShopItem').initView(_path, _typeArr[j], _sizeArr[i], _index);
+        let _ballData = ShopModule.Ball;
+        for (const _key in _ballData) {
+            if (_ballData.hasOwnProperty(_key)) {
+                const _elem = _ballData[_key];
+                let _ballItem = cc.instantiate(this.ballItemPre);
+                this.scrollView.content.addChild(_ballItem);
+                _ballItem.getComponent('BallItem').initView(_elem);
             }
         }
-        let _defaultPath = 'shop/ball/ball_img_circle18_1_1';
-        let _defaultShopItem = cc.instantiate(this.shopItemPre);
-        let _defaultIndex = 8;
-        this.scrollView.content.addChild(_defaultShopItem);
-        _defaultShopItem.getComponent('ShopItem').initView(_defaultPath, 'circle', 18, _defaultIndex);
     },
 
     _showRuby() {
         this.scrollView.content.destroyAllChildren();
-        let _typeArr = [
-            'mzq',
-            'ads_1',
-            'ruby1',
-            'ruby2',
-            'ruby3',
-            'ruby4',
-            'ruby5',
-            'ruby6',
-            'ruby7',
-            'ruby8',
-            'ruby9'
-        ];
-        let _nameArr = [
-            '黄金瞄准',
-            '移除广告',
-            '20',
-            '100',
-            '200',
-            '300',
-            '550',
-            '1150',
-            '3600',
-            '6250',
-            '15000'
-        ];
+        let _rubyData = ShopModule.Ruby;
+        for (const _key in _rubyData) {
+            if (_rubyData.hasOwnProperty(_key)) {
+                const _elem = _rubyData[_key];
+                let _rubyItem = cc.instantiate(this.rubyItemPre);
+                this.scrollView.content.addChild(_rubyItem);
+                _rubyItem.getComponent('RubyItem').initView(_elem);
+            }
+        }
+    },
+    _showShadow(i) {
+        this.btnRuby.node.getChildByName('spShadow').active = i === 0 ? false : true;
+        this.btnBall.node.getChildByName('spShadow').active = i === 1 ? false : true;
+        this.btnGift.node.getChildByName('spShadow').active = i === 2 ? false : true;
+    },
+
+    onBtnClickToSubItem(e) {
+        if (!e.target.getChildByName('spShadow').active) {
+            return;
+        }
+        let i = 0;
+        if (e.target.name === 'btnRuby') {
+            i = 0;
+        } else if (e.target.name === 'btnBall') {
+            i = 1;
+        } else if (e.target.name === 'btnGift') {
+            i = 2;
+        }
+        this.initView(i);
     }
 });
