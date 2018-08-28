@@ -1,5 +1,5 @@
 module.exports = {
-    Ruby: [{
+    ruby: [{
             typePath: 'shop/ruby/shop_btn_hot',
             type: '热卖',
             path: 'mzq',
@@ -73,7 +73,7 @@ module.exports = {
             name: '15000',
         }
     ],
-    Ball: [{
+    ball: [{
             index: 0,
             type: 'circle',
             size: 14,
@@ -289,5 +289,19 @@ module.exports = {
             size: 30,
             isUsed: false
         },
+    ],
+
+    gift: [{
+            type: 'ruby5',
+            num: 5000,
+            item0: 15,
+            item1: 15
+        },
+        {
+            type: 'ruby7',
+            num: 12000,
+            item0: 33,
+            item1: 33
+        }
     ]
 };

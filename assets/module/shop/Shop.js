@@ -20,6 +20,11 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        giftItemPre: {
+            displayName: 'giftItemPre',
+            default: null,
+            type: cc.Prefab
+        },
         btnRuby: {
             displayName: 'btnRuby',
             default: null,
@@ -54,18 +59,20 @@ cc.Class({
         UIMgr.destroyUI(this);
     },
 
-    initView(i) { //0:ruby,1:shop
+    initView(i) { //0:ruby,1:shop,2:gift
         this._showShadow(i);
         if (i === 0) {
             this._showRuby();
         } else if (i === 1) {
             this._showBall();
+        } else if (i === 2) {
+            this._showGift();
         }
     },
 
     _showBall() {
         this.scrollView.content.destroyAllChildren();
-        let _ballData = ShopModule.Ball;
+        let _ballData = ShopModule.ball;
         for (const _key in _ballData) {
             if (_ballData.hasOwnProperty(_key)) {
                 const _elem = _ballData[_key];
@@ -78,7 +85,7 @@ cc.Class({
 
     _showRuby() {
         this.scrollView.content.destroyAllChildren();
-        let _rubyData = ShopModule.Ruby;
+        let _rubyData = ShopModule.ruby;
         for (const _key in _rubyData) {
             if (_rubyData.hasOwnProperty(_key)) {
                 const _elem = _rubyData[_key];
@@ -92,6 +99,19 @@ cc.Class({
         this.btnRuby.node.getChildByName('spShadow').active = i === 0 ? false : true;
         this.btnBall.node.getChildByName('spShadow').active = i === 1 ? false : true;
         this.btnGift.node.getChildByName('spShadow').active = i === 2 ? false : true;
+    },
+
+    _showGift() {
+        this.scrollView.content.destroyAllChildren();
+        let _giftData = ShopModule.gift;
+        for (const _key in _giftData) {
+            if (_giftData.hasOwnProperty(_key)) {
+                const _elem = _giftData[_key];
+                let _giftItem = cc.instantiate(this.giftItemPre);
+                this.scrollView.content.addChild(_giftItem);
+                _giftItem.getComponent('GiftItem').initView(_elem);
+            }
+        }
     },
 
     onBtnClickToSubItem(e) {
