@@ -167,6 +167,7 @@ cc.Class({
                 return;
             }
             this._hp--;
+            this.spBlock.node.runAction(cc.sequence(cc.scaleTo(0.05, 0.8), cc.scaleTo(0.05, 1)));
             if (this._hp <= 0 && this._type === 9) {
                 this.node.parent.children.forEach(_block => {
                     let _script = _block.getComponent('Block');
