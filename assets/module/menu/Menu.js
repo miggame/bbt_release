@@ -2,6 +2,7 @@ let GameData = require('GameData');
 let Observer = require('Observer');
 let UIMgr = require('UIMgr');
 let GameCfg = require('GameCfg');
+let SignModule = require('SignModule');
 
 cc.Class({
     extends: Observer,
@@ -59,6 +60,7 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        loginTime: null,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -235,10 +237,21 @@ cc.Class({
         }.bind(this));
     },
 
-    _showSign() {
+    onBtnClickToSign() {
         UIMgr.createPrefab(this.signPre, function (root, ui) {
             this.addNode.addChild(root);
-            // ui.getComponent('Shop').initView(i);
+            ui.getComponent('Sign').initView();
+        }.bind(this));
+    },
+
+    _showSign() {
+        SignModule.initSignData();
+        if (SignModule.signData.isSigned) {
+            return;
+        }
+        UIMgr.createPrefab(this.signPre, function (root, ui) {
+            this.addNode.addChild(root);
+            ui.getComponent('Sign').initView();
         }.bind(this));
     }
 });

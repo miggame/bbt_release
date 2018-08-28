@@ -138,7 +138,13 @@ cc.Class({
         },
         //道具使用
         ballPlusFlag: false,
-        blockPlusFlag: false
+        blockPlusFlag: false,
+        //uiLayer
+        shopPre: {
+            displayName: 'shopPre',
+            default: null,
+            type: cc.Prefab
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -705,5 +711,13 @@ cc.Class({
         } else {
             this._showUniqueBlock(min, max, arr, type);
         }
+    },
+
+    onBtnClickToShop() { //0:ruby,1:ball,2:gift
+        let _i = 1;
+        UIMgr.createPrefab(this.shopPre, function (root, ui) {
+            this.addNode.addChild(root);
+            ui.getComponent('Shop').initView(_i);
+        }.bind(this));
     }
 });

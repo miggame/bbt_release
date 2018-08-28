@@ -23,7 +23,6 @@ module.exports = {
         }
         this.getTotalStar(); //初始化totalStar
         this.getTotalRuby(); //初始化totalRuby
-
     },
     saveCurStage(value) {
         cc.sys.localStorage.setItem('CurStage', value);
