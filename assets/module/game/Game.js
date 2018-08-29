@@ -4,6 +4,7 @@ let UIMgr = require('UIMgr');
 let Observer = require('Observer');
 let ObserverMgr = require('ObserverMgr');
 let ShopModule = require('ShopModule');
+let GameModule = require('GameModule');
 cc.Class({
     extends: Observer,
 
@@ -141,6 +142,11 @@ cc.Class({
         //道具使用
         ballPlusFlag: false,
         blockPlusFlag: false,
+        propertyLayout: {
+            displayName: 'propertyLayout',
+            default: null,
+            type: cc.Node
+        },
         //uiLayer
         shopPre: {
             displayName: 'shopPre',
@@ -409,6 +415,7 @@ cc.Class({
         }
     },
     _reset() {
+        this._refreshProperty();
         //道具使用后的重置
         if (this.ballPlusFlag) {
             this.ballPlusFlag = false;
@@ -646,6 +653,7 @@ cc.Class({
     },
 
     onBtnClickToItem(e) {
+        this._useProperty(parseInt(e.target.name.split('btnItem')[1]));
         switch (e.target.name) {
             case 'btnItem0':
                 this.blockLayer.children.forEach(_elem => {
@@ -738,5 +746,39 @@ cc.Class({
             this.addNode.addChild(root);
             ui.getComponent('Shop').initView(_i);
         }.bind(this));
+    },
+
+    //刷新底部道具列表
+    _refreshProperty() {
+        let _btnArr = this.propertyLayout.getComponentsInChildren(cc.Button);
+        for (const _key in _btnArr) {
+            if (_btnArr.hasOwnProperty(_key)) {
+                let _elem = GameModule.property[_key];
+                _btnArr[_key].node.getChildByName('layout').getComponentInChildren(cc.Label).string = _elem.price;
+                _btnArr[_key].node.getChildByName('layout').active = _elem.num <= 0 ? true : false;
+                _btnArr[_key].node.getChildByName('lblProperty').active = !_btnArr[_key].node.getChildByName('layout').active;
+                _btnArr[_key].node.getChildByName('lblProperty').getComponent(cc.Label).string = 'x' + _elem.num;
+                // if (GameModule.property[_key].num > 0 || GameModule.property[_key].price <= GameCfg.totalRuby) {
+                //     _btnArr[_key].interactable = true;
+                // } else {
+                //     _btnArr[_key].interactable = false;
+                // }
+                _btnArr[_key].interactable = GameModule.property[_key].num > 0 || GameModule.property[_key].price <= GameCfg.totalRuby
+
+            }
+        }
+    },
+    _useProperty(i) {
+        if (GameModule.property[i].num > 0) {
+            GameModule.property[i].num--;
+            GameCfg.savePropertyData();
+        } else {
+            if (GameCfg.totalRuby > GameModule.property[i].price) {
+                GameCfg.totalRuby -= GameModule.property[i].price
+                GameCfg.saveTotalRuby(GameCfg.totalRuby);
+                ObserverMgr.dispatchMsg(GameLocalMsg.Msg.RefreshRuby, null);
+            }
+        }
+        this._refreshProperty();
     }
 });

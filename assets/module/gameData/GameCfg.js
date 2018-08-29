@@ -1,5 +1,5 @@
 let ShopModule = require('ShopModule');
-
+let GameModule = require('GameModule');
 module.exports = {
     width: null,
     heigth: null,
@@ -16,6 +16,7 @@ module.exports = {
     totalRuby: 1500,
     ballIndex: 8,
     ballData: null,
+
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
@@ -27,6 +28,7 @@ module.exports = {
         this.getTotalStar(); //初始化totalStar
         this.getTotalRuby(); //初始化totalRuby
         this.initShopData(); //初始化小球商店数据及索引
+        this.initPropertyData(); //初始化道具数据
     },
     saveCurStage(value) {
         cc.sys.localStorage.setItem('CurStage', value);
@@ -79,6 +81,15 @@ module.exports = {
     saveShopData() {
         cc.sys.localStorage.setItem('ShopData', JSON.stringify(ShopModule));
         cc.sys.localStorage.setItem('BallIndex', this.ballIndex);
+    },
+    initPropertyData() {
+        let _propertyData = JSON.parse(cc.sys.localStorage.getItem('PropertyData'));
+        if (_propertyData !== null || _propertyData !== undefined) {
+            GameModule = _propertyData;
+        }
+        this.savePropertyData();
+    },
+    savePropertyData() {
+        cc.sys.localStorage.setItem('PropertyData', JSON.stringify(GameModule));
     }
-
 }
