@@ -1,3 +1,5 @@
+let ShopModule = require('ShopModule');
+
 module.exports = {
     width: null,
     heigth: null,
@@ -13,7 +15,7 @@ module.exports = {
     totalStar: 0,
     totalRuby: 1500,
     ballIndex: 8,
-
+    ballData: null,
     init() {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
@@ -24,6 +26,7 @@ module.exports = {
         }
         this.getTotalStar(); //初始化totalStar
         this.getTotalRuby(); //初始化totalRuby
+        this.initShopData(); //初始化小球商店数据及索引
     },
     saveCurStage(value) {
         cc.sys.localStorage.setItem('CurStage', value);
@@ -50,7 +53,32 @@ module.exports = {
         return _star;
     },
     getTotalRuby() {
-        let _ruby = this.totalRuby;
-        return _ruby;
+        let _ruby = cc.sys.localStorage.getItem('TotalRuby');
+        if (_ruby === null || _ruby === undefined) {
+            _ruby = 1000;
+        }
+        this.totalRuby = _ruby;
+        this.saveTotalRuby(this.totalRuby);
+        return this.totalRuby;
+    },
+    saveTotalRuby(value) {
+        cc.sys.localStorage.setItem('TotalRuby', value);
+    },
+    initShopData() {
+        let _shopData = JSON.parse(cc.sys.localStorage.getItem('ShopData'));
+        if (_shopData !== null || _shopData !== undefined) {
+            ShopModule = _shopData;
+        }
+        let _ballIndex = cc.sys.localStorage.getItem('BallIndex');
+        if (_ballIndex === null || _ballIndex === undefined) {
+            _ballIndex = 8;
+        }
+        this.ballIndex = _ballIndex;
+        this.saveShopData();
+    },
+    saveShopData() {
+        cc.sys.localStorage.setItem('ShopData', JSON.stringify(ShopModule));
+        cc.sys.localStorage.setItem('BallIndex', this.ballIndex);
     }
+
 }

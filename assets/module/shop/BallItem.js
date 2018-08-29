@@ -103,6 +103,10 @@ cc.Class({
         GameCfg.ballIndex = this._data.index;
         ShopModule.ball[this._data.index].isUsed = true;
         ShopModule.ball[this._data.index].hasOwned = true;
+        GameCfg.totalRuby = parseInt(GameCfg.totalRuby) - parseInt(this._data.price);
+        GameCfg.saveTotalRuby(GameCfg.totalRuby);
+        GameCfg.saveShopData(); //保存ShopModule数据
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.RefreshRuby, null);
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.BuyBall, this._data);
     }
 });

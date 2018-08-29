@@ -1,6 +1,7 @@
 let UIMgr = require('UIMgr');
 let ShopModule = require('ShopModule');
 let Observer = require('Observer');
+let GameCfg = require('GameCfg');
 
 cc.Class({
     extends: Observer,
@@ -41,17 +42,25 @@ cc.Class({
             default: null,
             type: cc.Button
         },
+        lblTotalRuby: { // 总ruby数
+            displayName: 'lblTotalRuby',
+            default: null,
+            type: cc.Label
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
     _getMsgList() {
         return [
-            GameLocalMsg.Msg.InsufficientRuby
+            GameLocalMsg.Msg.InsufficientRuby,
+            GameLocalMsg.Msg.RefreshRuby
         ];
     },
     _onMsg(msg, data) {
         if (msg === GameLocalMsg.Msg.InsufficientRuby) {
             this.initView(0); //去ruby商店 
+        } else if (msg === GameLocalMsg.Msg.RefreshRuby) {
+            this._refreshTotalRuby();
         }
     },
     onLoad() {
@@ -77,6 +86,7 @@ cc.Class({
         } else if (i === 2) {
             this._showGift();
         }
+        this._refreshTotalRuby();
     },
 
     _showBall() {
@@ -136,5 +146,8 @@ cc.Class({
             i = 2;
         }
         this.initView(i);
+    },
+    _refreshTotalRuby() {
+        this.lblTotalRuby.string = GameCfg.totalRuby;
     }
 });

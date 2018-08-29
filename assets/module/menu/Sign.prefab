@@ -27,11 +27,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 152
+        "__id__": 153
       }
     ],
     "_prefab": {
-      "__id__": 153
+      "__id__": 154
     },
     "_id": "",
     "_opacity": 255,
@@ -663,14 +663,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 149
+        "__id__": 150
       },
       {
-        "__id__": 150
+        "__id__": 151
       }
     ],
     "_prefab": {
-      "__id__": 151
+      "__id__": 152
     },
     "_id": "",
     "_opacity": 255,
@@ -4218,7 +4218,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 148
+      "__id__": 149
     },
     "_id": "",
     "_opacity": 255,
@@ -4258,7 +4258,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "lblVideo",
     "_objFlags": 0,
     "_parent": {
       "__id__": 135
@@ -4602,7 +4602,11 @@
     },
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 148
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
@@ -4628,6 +4632,15 @@
     "_N$target": {
       "__id__": 135
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "Sign",
+    "handler": "onBtnClickToVideo",
+    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -4743,6 +4756,9 @@
     },
     "lblTime": {
       "__id__": 128
+    },
+    "lblVideo": {
+      "__id__": 137
     }
   },
   {

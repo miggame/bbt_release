@@ -1,6 +1,7 @@
 let UIMgr = require('UIMgr');
 let SignModule = require('SignModule');
-
+let GameCfg = require('GameCfg');
+let ObserverMgr = require('ObserverMgr');
 cc.Class({
     extends: cc.Component,
 
@@ -22,6 +23,11 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        lblVideo: {
+            displayName: 'lblVideo',
+            default: null,
+            type: cc.Label
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -35,6 +41,7 @@ cc.Class({
     },
 
     initView() {
+        this.unschedule(this._showLeftTime);
         this._rewardArr = [];
         for (const _key in SignModule.signData.reward) {
             if (SignModule.signData.reward.hasOwnProperty(_key)) {
@@ -48,7 +55,10 @@ cc.Class({
                 this.spDayArr[_key].node.getChildByName('check').active = this.spDayArr[_key].node.getChildByName('spCheckBg').active = _elem.isChecked;
             }
         }
-        this.btnGot.interactable = this.btnDoubleGot.interactable = !SignModule.signData.isSigned;
+        this.btnGot.interactable = !SignModule.signData.isSigned;
+        this.btnDoubleGot.interactable = !SignModule.signData.videoSigined;
+
+        this.lblVideo.string = SignModule.signData.videoSigined ? '已领取' : '加倍';
         if (SignModule.signData.isSigned) {
             this._showLeftTime();
             this.schedule(this._showLeftTime, 1);
@@ -64,11 +74,21 @@ cc.Class({
     },
 
     onBtnClickToGot() {
+        let _plusRuby = 0;
         let _now = new Date();
         let _curWeekday = _now.getDay();
         if (_curWeekday === 0) {
             _curWeekday = 7;
         }
+        if (_curWeekday === 3) {
+            _plusRuby = 50;
+        } else if (_curWeekday === 5) {
+            _plusRuby = 100;
+        } else if (_curWeekday === 7) {
+            _plusRuby = 150;
+        }
+        GameCfg.totalRuby += _plusRuby;
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.RefreshRuby, null);
         let _key = parseInt(_curWeekday - 1);
         SignModule.signData.reward['day' + _key].isChecked = true;
         SignModule.signData.isSigned = true;
@@ -86,6 +106,29 @@ cc.Class({
         let _m = Math.floor(_leftSeconds / 60 % 60);
         let _s = Math.floor(_leftSeconds % 60);
         this.lblTime.string = _h + ':' + _m + ':' + _s;
+    },
+
+    onBtnClickToVideo() {
+        let _plusRuby = 0;
+        let _now = new Date();
+        let _curWeekday = _now.getDay();
+        if (_curWeekday === 0) {
+            _curWeekday = 7;
+        }
+        if (_curWeekday === 3) {
+            _plusRuby = 100;
+        } else if (_curWeekday === 5) {
+            _plusRuby = 200;
+        } else if (_curWeekday === 7) {
+            _plusRuby = 300;
+        } else {
+            _plusRuby = 50;
+        }
+        GameCfg.totalRuby += _plusRuby;
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.RefreshRuby, null);
+        SignModule.signData.videoSigined = true;
+        SignModule.saveSignData(SignModule.signData);
+        this.initView();
     }
 
 });

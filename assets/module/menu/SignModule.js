@@ -29,7 +29,7 @@ module.exports = {
         if (this.signData === null || this.signData === undefined) {
             this.signData = {
                 isSigned: false,
-                // time: dayjs(),
+                videoSigned: false,
                 time: new Date(),
                 reward: this.reward
             };

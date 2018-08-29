@@ -66,12 +66,15 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
     _getMsgList() {
         return [
-            GameLocalMsg.Msg.GoGame
+            GameLocalMsg.Msg.GoGame,
+            GameLocalMsg.Msg.RefreshRuby
         ];
     },
     _onMsg(msg, data) {
         if (msg === GameLocalMsg.Msg.GoGame) {
             this._close();
+        } else if (msg === GameLocalMsg.Msg.RefreshRuby) {
+            this.lblRuby.string = GameCfg.totalRuby;
         }
     },
     onLoad() {
