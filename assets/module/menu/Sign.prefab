@@ -3973,7 +3973,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "lblTime",
     "_objFlags": 0,
     "_parent": {
       "__id__": 126
@@ -4740,6 +4740,9 @@
     },
     "btnDoubleGot": {
       "__id__": 147
+    },
+    "lblTime": {
+      "__id__": 128
     }
   },
   {

@@ -17,6 +17,11 @@ cc.Class({
             default: null,
             type: cc.Button
         },
+        lblTime: {
+            displayName: 'lblTime',
+            default: null,
+            type: cc.Label
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -44,6 +49,12 @@ cc.Class({
             }
         }
         this.btnGot.interactable = this.btnDoubleGot.interactable = !SignModule.signData.isSigned;
+        if (SignModule.signData.isSigned) {
+            this._showLeftTime();
+            this.schedule(this._showLeftTime, 1);
+        } else {
+            this.lblTime.string = '领取';
+        }
     },
 
     // update (dt) {},
@@ -59,6 +70,17 @@ cc.Class({
         SignModule.saveSignData(SignModule.signData);
         SignModule.reward = SignModule.signData.reward;
         this.initView();
+    },
+    _showLeftTime() {
+        let _endTime = dayjs(SignModule.signData.time).endOf('day');
+        let _curTime = dayjs();
+
+        let _leftSeconds = _endTime.diff(_curTime, 'seconds');
+        let _h = Math.floor(_leftSeconds / 3600 % 24);
+        let _m = Math.floor(_leftSeconds / 60 % 60);
+        let _s = Math.floor(_leftSeconds % 60);
+
+        this.lblTime.string = _h + ':' + _m + ':' + _s;
     }
 
 });

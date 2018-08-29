@@ -32,6 +32,12 @@ module.exports = {
                 time: dayjs(),
                 reward: this.reward
             };
+            // this.saveSignData(this.signData);
+        }
+        let _curTime = dayjs();
+        if (_curTime.isAfter(dayjs(this.signData.time).endOf('day'))) {
+            this.signData.time = _curTime;
+            this.signData.isSigned = false;
             this.saveSignData(this.signData);
         }
         return this.signData;
