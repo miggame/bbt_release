@@ -11,7 +11,8 @@ module.exports = {
     ballPlusCount: 30, //道具增加小球数量
     //道具及成绩相关数据
     totalStar: 0,
-    totalRuby: 0,
+    totalRuby: 1500,
+    ballIndex: 8,
 
     init() {
         this.width = cc.view.getVisibleSize().width;

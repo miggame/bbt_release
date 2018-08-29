@@ -9367,6 +9367,7 @@
     "ballUILayer": {
       "__id__": 18
     },
+    "_ballData": null,
     "_canTouch": false,
     "_ballPos": null,
     "_touchP": null,

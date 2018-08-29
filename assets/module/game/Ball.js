@@ -1,5 +1,8 @@
 let ObserverMgr = require('ObserverMgr');
 let AudioMgr = require('AudioMgr');
+let ShopModule = require('ShopModule');
+let GameCfg = require('GameCfg');
+let UIMgr = require('UIMgr');
 
 cc.Class({
     extends: cc.Component,
@@ -11,7 +14,7 @@ cc.Class({
             type: cc.Sprite
         },
         _pool: null,
-        _hitGround: 0
+        _hitGround: 0,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -31,7 +34,15 @@ cc.Class({
         let _vel = _phyBody.linearVelocity;
         _vel = V;
         _phyBody.linearVelocity = _vel;
-        // this.node.getComponent(cc.RigidBody).enabledContactListener = true;
+
+        let _ballData = ShopModule.ball[GameCfg.ballIndex];
+        let _path = 'shop/ball/ball_img_' + _ballData.type + _ballData.size + '_0_1';
+        if (_ballData.type === 'default') {
+            _path = 'shop/ball/ball_img_circle18_1_1';
+        }
+
+        UIMgr.changeSpImg(_path, this.spBall);
+        this.spBall.node.width = this.spBall.node.height = _ballData.size;
     },
 
     onBeginContact(contact, self, other) { //tag:block-1, ground-2,wall-3

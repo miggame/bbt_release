@@ -3,6 +3,7 @@ let GameData = require('GameData');
 let UIMgr = require('UIMgr');
 let Observer = require('Observer');
 let ObserverMgr = require('ObserverMgr');
+let ShopModule = require('ShopModule');
 cc.Class({
     extends: Observer,
 
@@ -68,6 +69,7 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        _ballData: null,
         //点击监听
         _canTouch: false,
         _ballPos: null,
@@ -154,7 +156,9 @@ cc.Class({
             GameLocalMsg.Msg.CanTouch,
             GameLocalMsg.Msg.End,
             GameLocalMsg.Msg.UpdateScore,
-            GameLocalMsg.Msg.PauseRetry
+            GameLocalMsg.Msg.PauseRetry,
+            GameLocalMsg.Msg.PauseGoMenu,
+            GameLocalMsg.Msg.BuyBall
         ];
     },
     _onMsg(msg, data) {
@@ -178,6 +182,11 @@ cc.Class({
         } else if (msg === GameLocalMsg.Msg.PauseRetry) { //关闭暂停界面且关闭游戏界面
             ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoGame, null);
             this._close();
+        } else if (msg === GameLocalMsg.Msg.PauseGoMenu) {
+            ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
+            this._close();
+        } else if (msg === GameLocalMsg.Msg.BuyBall) { //游戏中收到购买小球消息
+            this._showUIBall();
         }
     },
     onLoad() {
@@ -443,6 +452,16 @@ cc.Class({
         this._refreshBallCount();
     },
     _showUIBall() {
+        this._ballData = ShopModule.ball[GameCfg.ballIndex];
+        let _path = 'shop/ball/ball_img_' + this._ballData.type + this._ballData.size + '_0_1';
+        if (this._ballData.type === 'default') {
+            _path = 'shop/ball/ball_img_circle18_1_1';
+        }
+
+        UIMgr.changeSpImg(_path, this.spBall);
+        UIMgr.changeSpImg(_path, this.spBallTemp);
+        this.spBall.node.width = this.spBall.node.height = this._ballData.size;
+        this.spBallTemp.node.width = this.spBallTemp.node.height = this._ballData.size;
         this.spBall.node.active = this._canTouch ? true : false;
         this.spBallTemp.node.active = !this.spBall.node.active;
         this._showBall();

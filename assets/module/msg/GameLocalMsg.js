@@ -7,7 +7,9 @@ window.GameLocalMsg = {
         End: 'GameLocalMsg.Msg.End',
         UpdateScore: 'GameLocalMsg.Msg.UpdateScore',
         Pause: 'GameLocalMsg.Msg.Pause',
-        PauseRetry: 'GameLocalMsg.Msg.PauseRetry'
-        // Continue: 'GameLocalMsg.Msg.Continue'
+        PauseRetry: 'GameLocalMsg.Msg.PauseRetry',
+        PauseGoMenu: 'GameLocalMsg.Msg.PauseGoMenu',
+        InsufficientRuby: 'GameLocalMsg.Msg.InsufficientRuby',
+        BuyBall: 'GameLocalMsg.Msg.BuyBall'
     }
 }

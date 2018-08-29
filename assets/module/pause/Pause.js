@@ -31,7 +31,7 @@ cc.Class({
 
     // update (dt) {},
     onBtnClickToMenu() {
-        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
+        ObserverMgr.dispatchMsg(GameLocalMsg.Msg.PauseGoMenu, null);
         UIMgr.destroyUI(this);
     },
 

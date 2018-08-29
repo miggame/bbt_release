@@ -1,8 +1,9 @@
 let UIMgr = require('UIMgr');
 let ShopModule = require('ShopModule');
+let Observer = require('Observer');
 
 cc.Class({
-    extends: cc.Component,
+    extends: Observer,
 
     properties: {
         scrollView: {
@@ -43,10 +44,18 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
-
+    _getMsgList() {
+        return [
+            GameLocalMsg.Msg.InsufficientRuby
+        ];
+    },
+    _onMsg(msg, data) {
+        if (msg === GameLocalMsg.Msg.InsufficientRuby) {
+            this.initView(0); //去ruby商店 
+        }
+    },
     onLoad() {
-
-
+        this._initMsg();
     },
 
     start() {
