@@ -29,13 +29,16 @@ module.exports = {
         if (this.signData === null || this.signData === undefined) {
             this.signData = {
                 isSigned: false,
-                time: dayjs(),
+                // time: dayjs(),
+                time: new Date(),
                 reward: this.reward
             };
-            // this.saveSignData(this.signData);
         }
-        let _curTime = dayjs();
-        if (_curTime.isAfter(dayjs(this.signData.time).endOf('day'))) {
+        let _curTime = new Date();
+        let _lastTime = new Date(this.signData.time);
+        _lastTime.setHours(23, 59, 59);
+
+        if (_curTime.getTime() > _lastTime.getTime()) {
             this.signData.time = _curTime;
             this.signData.isSigned = false;
             this.saveSignData(this.signData);

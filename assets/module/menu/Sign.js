@@ -59,11 +59,16 @@ cc.Class({
 
     // update (dt) {},
     onBtnClickToClose() {
+        this.unschedule(this._showLeftTime);
         UIMgr.destroyUI(this);
     },
 
     onBtnClickToGot() {
-        let _curWeekday = dayjs().day();
+        let _now = new Date();
+        let _curWeekday = _now.getDay();
+        if (_curWeekday === 0) {
+            _curWeekday = 7;
+        }
         let _key = parseInt(_curWeekday - 1);
         SignModule.signData.reward['day' + _key].isChecked = true;
         SignModule.signData.isSigned = true;
@@ -72,14 +77,14 @@ cc.Class({
         this.initView();
     },
     _showLeftTime() {
-        let _endTime = dayjs(SignModule.signData.time).endOf('day');
-        let _curTime = dayjs();
-
-        let _leftSeconds = _endTime.diff(_curTime, 'seconds');
+        let _curTime = new Date();
+        let _now = _curTime.getTime();
+        _curTime.setHours(23, 59, 59);
+        let _end = _curTime.getTime();
+        let _leftSeconds = (_end - _now) / 1000;
         let _h = Math.floor(_leftSeconds / 3600 % 24);
         let _m = Math.floor(_leftSeconds / 60 % 60);
         let _s = Math.floor(_leftSeconds % 60);
-
         this.lblTime.string = _h + ':' + _m + ':' + _s;
     }
 
