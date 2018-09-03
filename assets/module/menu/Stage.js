@@ -39,6 +39,8 @@ cc.Class({
     // update (dt) {},
     initView(index) {
         this._index = index;
+        console.log('GameCfg.getCurStage()', GameCfg.getCurStage());
+        console.log('index', index);
         if (GameCfg.getCurStage() >= index) {
             this._canChoose = true;
             this.lblStage.node.active = true;
@@ -60,6 +62,7 @@ cc.Class({
     },
 
     onBtnClickToStage() {
+        console.log(this._canChoose);
         if (!this._canChoose) {
             return;
         }

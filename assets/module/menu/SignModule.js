@@ -25,15 +25,25 @@ module.exports = {
     },
 
     initSignData() {
-        this.signData = JSON.parse(cc.sys.localStorage.getItem('Sign'));
-        if (this.signData === null || this.signData === undefined) {
+        if (cc.sys.localStorage.getItem('Sign') === null || cc.sys.localStorage.getItem('Sign') === undefined || cc.sys.localStorage.getItem('Sign') === '') {
             this.signData = {
                 isSigned: false,
                 videoSigned: false,
                 time: new Date(),
                 reward: this.reward
             };
+        } else {
+            this.signData = JSON.parse(cc.sys.localStorage.getItem('Sign'));
         }
+        // this.signData = JSON.parse(cc.sys.localStorage.getItem('Sign'));
+        // if (this.signData === null || this.signData === undefined) {
+        //     this.signData = {
+        //         isSigned: false,
+        //         videoSigned: false,
+        //         time: new Date(),
+        //         reward: this.reward
+        //     };
+        // }
         let _curTime = new Date();
         let _lastTime = new Date(this.signData.time);
         _lastTime.setHours(23, 59, 59);

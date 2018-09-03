@@ -21,7 +21,7 @@ module.exports = {
         this.width = cc.view.getVisibleSize().width;
         this.heigth = cc.view.getVisibleSize().height;
         let _curStage = cc.sys.localStorage.getItem('CurStage');
-        if (_curStage === undefined || _curStage === null) {
+        if (_curStage === undefined || _curStage === null || _curStage === '') {
             _curStage = 1;
             this.saveCurStage(_curStage);
         }
@@ -37,6 +37,9 @@ module.exports = {
         return cc.sys.localStorage.getItem('CurStage');
     },
     getStageCfg() {
+        if (cc.sys.localStorage.getItem('StageCfg') === '' || cc.sys.localStorage.getItem('StageCfg') === null || cc.sys.localStorage.getItem('StageCfg') === undefined) {
+            return null;
+        }
         return JSON.parse(cc.sys.localStorage.getItem('StageCfg'));
     },
     saveStageCfg(obj) {
@@ -45,6 +48,9 @@ module.exports = {
     getTotalStar() {
         let _star = 0;
         let _stageData = this.getStageCfg();
+        if (_stageData === null) {
+            return _star;
+        }
         for (const _key in _stageData) {
             if (_stageData.hasOwnProperty(_key)) {
                 const _elem = _stageData[_key];
@@ -56,7 +62,7 @@ module.exports = {
     },
     getTotalRuby() {
         let _ruby = cc.sys.localStorage.getItem('TotalRuby');
-        if (_ruby === null || _ruby === undefined) {
+        if (_ruby === null || _ruby === undefined || _ruby === '') {
             _ruby = 1000;
         }
         this.totalRuby = _ruby;
@@ -67,14 +73,25 @@ module.exports = {
         cc.sys.localStorage.setItem('TotalRuby', value);
     },
     initShopData() {
-        let _shopData = JSON.parse(cc.sys.localStorage.getItem('ShopData'));
-        if (_shopData !== null || _shopData !== undefined) {
+        let _shopData = null;
+        if (cc.sys.localStorage.getItem('ShopData') === '' || cc.sys.localStorage.getItem('ShopData') === null || cc.sys.localStorage.getItem('ShopData') === undefined) {
+            _shopData = null;
+        } else {
+            _shopData = JSON.parse(cc.sys.localStorage.getItem('ShopData'));
             ShopModule = _shopData;
         }
         let _ballIndex = cc.sys.localStorage.getItem('BallIndex');
-        if (_ballIndex === null || _ballIndex === undefined) {
+        if (_ballIndex === null || _ballIndex === undefined || _ballIndex === '') {
             _ballIndex = 8;
         }
+        // let _shopData = JSON.parse(cc.sys.localStorage.getItem('ShopData'));
+        // if (_shopData !== null || _shopData !== undefined) {
+        //     ShopModule = _shopData;
+        // }
+        // let _ballIndex = cc.sys.localStorage.getItem('BallIndex');
+        // if (_ballIndex === null || _ballIndex === undefined) {
+        //     _ballIndex = 8;
+        // }
         this.ballIndex = _ballIndex;
         this.saveShopData();
     },
@@ -83,10 +100,17 @@ module.exports = {
         cc.sys.localStorage.setItem('BallIndex', this.ballIndex);
     },
     initPropertyData() {
-        let _propertyData = JSON.parse(cc.sys.localStorage.getItem('PropertyData'));
-        if (_propertyData !== null || _propertyData !== undefined) {
+        let _propertyData = cc.sys.localStorage.getItem('PropertyData');
+        if (_propertyData === null || _propertyData === undefined || _propertyData === '') {
+            _propertyData = null;
+        } else {
+            _propertyData = JSON.parse(cc.sys.localStorage.getItem('PropertyData'));
             GameModule = _propertyData;
         }
+        // let _propertyData = JSON.parse(cc.sys.localStorage.getItem('PropertyData'));
+        // if (_propertyData !== null || _propertyData !== undefined) {
+        //     GameModule = _propertyData;
+        // }
         this.savePropertyData();
     },
     savePropertyData() {
