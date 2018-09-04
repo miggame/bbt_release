@@ -219,11 +219,11 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-        //     cc.PhysicsManager.DrawBits.e_pairBit |
-        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-        //     cc.PhysicsManager.DrawBits.e_jointBit |
-        //     cc.PhysicsManager.DrawBits.e_shapeBit;
+        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+            cc.PhysicsManager.DrawBits.e_pairBit |
+            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+            cc.PhysicsManager.DrawBits.e_jointBit |
+            cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
         //关卡基础数值
@@ -340,18 +340,22 @@ cc.Class({
     },
     _shootBall() {
         this._hideWaring();
-        let _touchV = this._touchP.sub(this._ballPos).normalizeSelf().mul(GameCfg.ballSpeed);
+        // let _touchV = this._touchP.sub(this._ballPos).normalizeSelf().mul(GameCfg.ballSpeed);
+        let _touchV = cc.pMult(cc.pNormalize(cc.pSub(this._touchP, this._ballPos)), GameCfg.ballSpeed);
         let _ballNode = this._ballPool.get();
         if (!_ballNode) {
             _ballNode = cc.instantiate(this.ballPre);
         }
         this.ballLayer.addChild(_ballNode);
         _ballNode.position = this.spBall.node.position;
+        console.log('_touchV.x: ', _touchV.x);
+        console.log('_touchV.y: ', _touchV.y);
         _ballNode.getComponent('Ball').initView(_touchV, this._ballPool);
         this._refreshCurBallCount(); //刷新当前小球数
     },
     _drawLine(p0, p1) {
-        let _touchV = p1.sub(p0).normalize();
+        // let _touchV = p1.sub(p0).normalize();
+        let _touchV = cc.pNormalize(cc.pSub(p1, p0));
         let _radian = _touchV.angle(cc.v2(1, 0));
         if (_radian < 0.14 || _radian > 3) { //限制角度
             return;
@@ -369,7 +373,8 @@ cc.Class({
         this.dotLayout.active = true;
         this.spHintDot.node.active = true;
         this.spHintDot.node.position = point;
-        let _dirV = point.sub(basePos);
+        // let _dirV = point.sub(basePos);
+        let _dirV = cc.pSub(point, basePos);
         let _perV = _dirV.div(GameCfg.dotCount * 0.7);
         let _midKey = GameCfg.dotCount * 0.7;
         for (const key in this.dotLayout.children) {

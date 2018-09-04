@@ -34,7 +34,7 @@ cc.Class({
         let _vel = _phyBody.linearVelocity;
         _vel = V;
         _phyBody.linearVelocity = _vel;
-
+        console.log('_phyBody.linearVelocity.x: ', _phyBody.linearVelocity.x);
         let _ballData = ShopModule.ball[GameCfg.ballIndex];
         let _path = 'shop/ball/ball_img_' + _ballData.type + _ballData.size + '_0_1';
         if (_ballData.type === 'default') {
@@ -60,8 +60,10 @@ cc.Class({
                 }
                 break;
             case 2:
+                cc.log('1');
                 this._hitGround++;
                 if (this._hitGround >= 2) {
+                    cc.log('2');
                     AudioMgr.playHitSound();
                     let pos = this.node.position;
                     this._pool.put(this.node);

@@ -58,6 +58,9 @@ cc.Class({
         } else {
             AudioMgr.playFailSound();
         }
+
+        //调用原生广告接口
+        this.showAD_Admob();
     },
 
     onBtnClickToRetry() {
@@ -82,5 +85,9 @@ cc.Class({
     onBtnClickToHome() {
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
         UIMgr.destroyUI(this);
+    },
+
+    showAD_Admob() {
+        jsb.reflection.callStaticMethod('org/cocos2dx/javascript/AppActivity', 'showAD', '()V');
     }
 });

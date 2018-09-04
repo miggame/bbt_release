@@ -1,7 +1,7 @@
 {
   "appKey": "",
   "appSecret": "",
-  "encryptJs": true,
+  "encryptJs": false,
   "excludeScenes": [],
   "fb-instant-games": {},
   "includeAnySDK": false,
@@ -14,12 +14,12 @@
   "oauthLoginServer": "",
   "optimizeHotUpdate": false,
   "orientation": {
-    "landscapeLeft": true,
-    "landscapeRight": true,
-    "portrait": false,
-    "upsideDown": false
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
+    "upsideDown": true
   },
-  "packageName": "org.cocos2d.bbt2",
+  "packageName": "com.mig.bbt2",
   "privateKey": "",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
