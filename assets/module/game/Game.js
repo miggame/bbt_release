@@ -219,11 +219,11 @@ cc.Class({
     _initPhysics() {
         this.physicsManager = cc.director.getPhysicsManager();
         this.physicsManager.enabled = true;
-        this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            cc.PhysicsManager.DrawBits.e_pairBit |
-            cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit;
+        // this.physicsManager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+        //     cc.PhysicsManager.DrawBits.e_pairBit |
+        //     cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+        //     cc.PhysicsManager.DrawBits.e_jointBit |
+        //     cc.PhysicsManager.DrawBits.e_shapeBit;
     },
     initView() {
         //关卡基础数值
@@ -348,8 +348,7 @@ cc.Class({
         }
         this.ballLayer.addChild(_ballNode);
         _ballNode.position = this.spBall.node.position;
-        console.log('_touchV.x: ', _touchV.x);
-        console.log('_touchV.y: ', _touchV.y);
+
         _ballNode.getComponent('Ball').initView(_touchV, this._ballPool);
         this._refreshCurBallCount(); //刷新当前小球数
     },
