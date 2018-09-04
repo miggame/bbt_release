@@ -35,7 +35,14 @@ cc.Class({
             displayName: 'pausePre',
             default: null,
             type: cc.Prefab
-        }
+        },
+
+        //开放数据域
+        display: {
+            displayName: 'display',
+            default: null,
+            type: cc.Sprite
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -66,9 +73,25 @@ cc.Class({
 
     start() {
         this._initLoading();
+        this.tex = new cc.Texture2D();
+        this.scheduleOnce(this.sendMsg, 2);
     },
 
-    // update (dt) {},
+    // 刷新开放数据域的纹理
+    _updateSubDomainCanvas() {
+        if (!this.tex) {
+            return;
+        }
+        let openDataContext = wx.getOpenDataContext();
+        let sharedCanvas = openDataContext.canvas;
+        this.tex.initWithElement(sharedCanvas);
+        this.tex.handleLoadedTexture();
+        this.display.spriteFrame = new cc.SpriteFrame(this.tex);
+    },
+    update(dt) {
+        this._updateSubDomainCanvas();
+    },
+
     _initLoading() { //展示loading界面
         UIMgr.createPrefab(this.loadingPre, function (root, ui) {
             this.addNode.addChild(root);
@@ -98,5 +121,10 @@ cc.Class({
         UIMgr.createPrefab(this.pausePre, function (root, ui) {
             this.addNode.addChild(root);
         }.bind(this));
+    },
+    sendMsg() {
+        wx.postMessage({
+            message: 'wxMsg'
+        });
     }
 });
