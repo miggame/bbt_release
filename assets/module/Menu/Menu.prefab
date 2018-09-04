@@ -4112,7 +4112,7 @@
       "__id__": 1
     },
     "component": "Menu",
-    "handler": "onBtnClickToShowAd",
+    "handler": "onBtnClickToShareSetting",
     "customEventData": ""
   },
   {

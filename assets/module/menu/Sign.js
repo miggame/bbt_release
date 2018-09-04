@@ -69,11 +69,13 @@ cc.Class({
 
     // update (dt) {},
     onBtnClickToClose() {
+        console.log('closeSign');
         this.unschedule(this._showLeftTime);
         UIMgr.destroyUI(this);
     },
 
     onBtnClickToGot() {
+        console.log('got');
         let _plusRuby = 0;
         let _now = new Date();
         let _curWeekday = _now.getDay();

@@ -130,8 +130,6 @@ cc.Class({
     },
     // 分享功能
     onBtnClickToShareGame() {
-        console.log('share>>>: ');
-        console.log('cc.find("canvas"): ', cc.find('canvas'));
         if (typeof FBInstant === 'undefined') return;
         FBInstant.shareAsync({
             intent: 'SHARE',
@@ -192,7 +190,6 @@ cc.Class({
     },
 
     onBtnClickToShowAd() {
-        console.log('showAd: ');
         this._preloadedInterstitial.showAsync()
             .then(function () {
                 // Perform post-ad success operation
@@ -256,5 +253,25 @@ cc.Class({
             this.addNode.addChild(root);
             ui.getComponent('Sign').initView();
         }.bind(this));
+    },
+    onBtnClickToShareSetting() {
+        wx.showShareMenu({
+            withShareTicket: true
+        });
+        console.log('hhhhhhllll: ');
+        wx.shareAppMessage({
+            title: 'hh',
+            imageUrl: '',
+            query: '',
+            success: function (res) {
+                console.log('res1: ', res);
+            },
+            fail: function (res) {
+                console.log('res2: ', res);
+            },
+            complete: function (res) {
+                console.log('res3: ', res);
+            }
+        })
     }
 });
