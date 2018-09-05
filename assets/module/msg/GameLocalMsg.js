@@ -12,5 +12,9 @@ window.GameLocalMsg = {
         InsufficientRuby: 'GameLocalMsg.Msg.InsufficientRuby',
         BuyBall: 'GameLocalMsg.Msg.BuyBall',
         RefreshRuby: 'GameLocalMsg.Msg.RefreshRuby'
+    },
+    videoCb() {
+        cc.log('>>>>>>>');
+        cc.log(10000);
     }
 }

@@ -89,5 +89,8 @@ cc.Class({
 
     showAD_Admob() {
         jsb.reflection.callStaticMethod('org/cocos2dx/javascript/AppActivity', 'showAD', '()V');
+    },
+    cb() {
+        cc.log('<<<<<<<<');
     }
 });
