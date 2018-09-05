@@ -348,7 +348,6 @@ cc.Class({
         }
         this.ballLayer.addChild(_ballNode);
         _ballNode.position = this.spBall.node.position;
-
         _ballNode.getComponent('Ball').initView(_touchV, this._ballPool);
         this._refreshCurBallCount(); //刷新当前小球数
     },
