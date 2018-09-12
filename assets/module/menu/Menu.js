@@ -79,7 +79,7 @@ cc.Class({
     },
     onLoad() {
         //播放视频广告
-        this.showAd55918();
+        // this.showAd55918();
         this._initMsg();
         //创建节点池
         let len = 30
@@ -259,10 +259,5 @@ cc.Class({
             this.addNode.addChild(root);
             ui.getComponent('Sign').initView();
         }.bind(this));
-    },
-
-    //视频广告播放
-    showAd55918() {
-        window.myAd55918 && window.myAd55918.show();
     }
 });

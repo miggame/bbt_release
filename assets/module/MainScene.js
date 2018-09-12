@@ -63,12 +63,16 @@ cc.Class({
         GameData.init(); //初始化游戏数据
         GameCfg.init(); //初始化游戏配置数据
 
+        function showAd55918() {
+            window.myAd55918 && window.myAd55918.show();
+        }
         //初始化视频广告mobvista
         if (window.Vijs) {
             window.myAd55918 = Vijs.setAD({
                 unitid: 55918,
                 loadedCallback: function () {
                     console.log('load success');
+                    showAd55918();
                 },
                 rewardedCallback: function (reward_name, reward_amount) {
                     console.log(reward_amount);
@@ -112,5 +116,10 @@ cc.Class({
         UIMgr.createPrefab(this.pausePre, function (root, ui) {
             this.addNode.addChild(root);
         }.bind(this));
-    }
+    },
+    //视频广告播放
+    // showAd55918() {
+    //     cc.log('ad');
+    //     window.myAd55918 && window.myAd55918.show();
+    // }
 });
