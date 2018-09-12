@@ -58,6 +58,7 @@ cc.Class({
         } else {
             AudioMgr.playFailSound();
         }
+        this.showAd55918();
     },
 
     onBtnClickToRetry() {
@@ -82,5 +83,10 @@ cc.Class({
     onBtnClickToHome() {
         ObserverMgr.dispatchMsg(GameLocalMsg.Msg.GoMenu, null);
         UIMgr.destroyUI(this);
+    },
+
+    //视频广告播放
+    showAd55918() {
+        window.myAd55918 && window.myAd55918.show();
     }
 });
