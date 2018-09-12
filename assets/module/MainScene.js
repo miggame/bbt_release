@@ -79,6 +79,7 @@ cc.Class({
 
     start() {
         this._initLoading();
+
     },
 
     // update (dt) {},
